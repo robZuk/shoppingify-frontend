@@ -1,8 +1,9 @@
-# car-rental  
+# shoppingify  
 
 ### [https://blooming-gorge-77011.herokuapp.com/](https://blooming-gorge-77011.herokuapp.com/)
 
 ![SCREEN](https://user-images.githubusercontent.com/40764780/117391950-56b53680-aef1-11eb-9b0e-92affe5f7938.png)
+![shoppingiffy](https://user-images.githubusercontent.com/40764780/217833820-d10d90ec-b5a8-4674-b9a3-f78101466a11.png)
 
 ### Technologies
 - React 18
