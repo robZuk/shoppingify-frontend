@@ -1,0 +1,21 @@
+//react-toastify
+$rt-namespace: "Toastify";
+
+:root {
+  --toastify-color-error: #eb5757;
+}
+
+.#{$rt-namespace}__toast {
+  border-radius: 6px;
+}
+.#{$rt-namespace}__progress-bar {
+  height: 3px;
+}
+
+.#{$rt-namespace}__toast-container {
+  &--top-center {
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

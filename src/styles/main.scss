@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600&family=Quicksand:wght@300;500;600;700&display=swap");
+@import "react-toastify/dist/ReactToastify.css";
+
+@import "_variables.scss";
+@import "_wrapper.scss";
+@import "_spinner.scss";
+@import "_transform-animation.scss";
+@import "_navigation.scss";
+@import "./main/_products.scss";
+@import "./main/_history.scss";
+@import "./main/_stats.scss";
+@import "./main/_list-details.scss";
+@import "./sidebar/_list.scss";
+@import "./sidebar/_new-product.scss";
+@import "./sidebar/_product-details.scss";
+@import "./sidebar/_product-on-list.scss";
+@import "./sidebar/_list-property.scss";
+@import "_modal.scss";
+@import "_toastify.scss";
+
+@import "_user.scss";
+@import "_search.scss";

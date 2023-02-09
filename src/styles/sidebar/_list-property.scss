@@ -1,0 +1,54 @@
+.list-property-save {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: $color2;
+
+  &-form {
+    margin: 10px 0;
+    transform: translateX(-9px);
+    &-input {
+      position: relative;
+      transform: translateX(18px);
+      padding: 20px;
+      width: 180px;
+      border: 2px solid $color1;
+      border-radius: $border-radius1;
+      border-color: $color9;
+      &::placeholder {
+        font-size: 14px;
+        color: $color12;
+      }
+      &.active {
+        border-color: $color1;
+      }
+    }
+    &-button {
+      padding: 18px 29px 19px;
+      width: 80px;
+      border: 2px solid $color9;
+      border-radius: $border-radius1;
+      background-color: $color9;
+      font-size: 16px;
+      color: $color2;
+      border-color: $color9;
+      &.active {
+        border-color: $color1;
+        background-color: $color1;
+      }
+    }
+  }
+}
+.list-property-edit {
+  margin-right: 20px;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: $color2;
+
+  @media (width <= 850px) {
+    padding-left: 60px;
+  }
+}

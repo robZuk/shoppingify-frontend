@@ -1,0 +1,117 @@
+.stats {
+  padding: 30px;
+
+  &-top {
+    display: grid;
+    grid-template-areas: "items categories";
+    grid-template-columns: 1fr 1fr;
+    font-size: 20px;
+    grid-gap: 30px;
+    grid-template-areas:
+      "items"
+      "categories";
+    grid-template-columns: minmax(50%, 250px);
+
+    @media (width >= 600px) {
+      font-size: 24px;
+    }
+    @media (width >= 1200px) {
+      grid-template-areas: "items categories";
+      grid-template-columns: minmax(30%, 280px) minmax(30%, 280px);
+    }
+
+    &-items {
+      grid-area: items;
+      &-progress {
+        font-size: 14px;
+        margin: 20px 0;
+        label {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          p:nth-child(2) {
+            justify-self: end;
+            font-size: 18px;
+          }
+        }
+        &-name {
+          &::first-letter {
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+
+    &-categories {
+      grid-area: categories;
+
+      progress::-webkit-progress-value {
+        background-color: $color13;
+      }
+
+      progress[value]::-moz-progress-bar {
+        background-color: $color13;
+      }
+
+      &-progress {
+        font-size: 14px;
+        margin: 20px 0;
+        label {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+
+          p:nth-child(2) {
+            justify-self: end;
+            font-size: 18px;
+          }
+        }
+        &-name {
+          &::first-letter {
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+  &-chart {
+    margin-top: 30px;
+    width: min(70vw, 1000px);
+
+    p {
+      font-size: 20px;
+      margin-bottom: 20px;
+      @media (width >= 600px) {
+        font-size: 24px;
+      }
+    }
+    &-label {
+      &-icon {
+        color: $color1;
+        font-size: 26px;
+      }
+    }
+  }
+}
+
+progress {
+  height: 7px;
+  width: 100%;
+  &::-webkit-progress-bar {
+    background-color: $color16;
+    border-radius: 4px;
+  }
+}
+
+progress::-webkit-progress-value {
+  background-color: $color1;
+  border-radius: 4px;
+}
+
+progress[value] {
+  border-radius: 4px;
+  border: none;
+  background-color: $color16;
+}
+progress[value]::-moz-progress-bar {
+  background-color: $color1;
+  border-radius: 4px;
+}

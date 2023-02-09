@@ -1,0 +1,150 @@
+.list {
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+
+  height: clamp(55vh, 550px, 250vh);
+  background-color: $color4;
+  @media (width >= 850px) {
+    height: clamp(85vh, 450px, 250vh);
+  }
+  &-new-item {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 130px;
+    max-width: 280px;
+    margin: 30px 0;
+    background-color: $color10;
+    border-radius: $border-radius2;
+    &-image {
+      position: absolute;
+      bottom: 20px;
+      left: 15px;
+    }
+    &-text {
+      position: absolute;
+      top: 10px;
+      left: 115px;
+      margin-right: 20px;
+      font-size: 14px;
+      color: $color2;
+      text-align: left;
+      @media (width >= 600px) {
+        font-size: 16px;
+      }
+    }
+    &-button {
+      position: absolute;
+      top: 70px;
+      left: 115px;
+      padding: 10px 30px;
+      box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
+      border-radius: $border-radius1;
+      border: none;
+      background-color: $color2;
+      color: $color6;
+    }
+  }
+  &-products {
+    position: relative;
+    margin: 0px 20px;
+    padding: 15px;
+    min-height: 260px;
+    @include scrollbar;
+    @media (600px <= width <= 850px) {
+      padding-left: clamp(60px, 50%, 100px);
+      padding-right: clamp(0px, 20%, 100px);
+    }
+    @media (width >= 600px) {
+      padding: 15px 0;
+    }
+
+    &-title {
+      position: relative;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 24px;
+      color: $color6;
+      @media (width >= 600px) {
+        font-size: 24px;
+      }
+    }
+
+    &-edit-icon {
+      position: absolute;
+      right: 0;
+      text-align: right;
+      cursor: auto;
+      color: $color11;
+
+      &.active {
+        cursor: pointer;
+        color: $color8;
+      }
+    }
+
+    &-edit {
+      width: 210px;
+      margin: 15px 0;
+      border-radius: 12px;
+      color: $color6;
+      background-color: $color2;
+      input {
+        margin: 10px;
+        padding: 10px 10px;
+        width: 90%;
+        border: none;
+        border-bottom: 1px solid $color12;
+        border-radius: 0;
+        color: $color6;
+        font-size: 14px;
+        @media (width >= 600px) {
+          font-size: 16px;
+        }
+
+        &::placeholder {
+          color: $color12;
+          font-size: 14px;
+        }
+      }
+      button {
+        margin: 10px;
+        padding: 5px 10px;
+        color: $color6;
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+      button:nth-child(1) {
+        background-color: inherit;
+      }
+      button:nth-child(2) {
+        background-color: $color1;
+      }
+    }
+
+    &-shopping {
+      position: absolute;
+      bottom: -2%;
+    }
+
+    &-info {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      display: grid;
+      justify-items: center;
+      transform: translate(-50%, -50%);
+      transition: 0.2s;
+      font-size: 15px;
+    }
+
+    &-category {
+      margin-top: 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      color: $color11;
+    }
+  }
+}

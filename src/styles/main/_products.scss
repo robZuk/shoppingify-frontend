@@ -1,0 +1,93 @@
+.products-wrapper {
+  background-color: $color3;
+  color: $color6;
+
+  .products {
+    &-header {
+      display: grid;
+      grid-template-columns: 1fr;
+      @media (width >= 1300px) {
+        grid-template-columns: 3fr 2fr;
+      }
+
+      &-title {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 32px;
+        padding: 3vh 30px;
+        text-align: justify;
+        .first-word {
+          color: $color1;
+        }
+        @media (width >= 600px) {
+          font-size: 26px;
+        }
+      }
+    }
+
+    .products-info {
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      height: 20vh;
+      font-size: 15px;
+    }
+
+    .categories {
+      position: relative;
+      display: grid;
+      row-gap: 10px;
+      justify-items: start;
+      margin: 3vh 30px;
+      color: $color8;
+
+      &-category {
+        display: grid;
+        font-size: 18px;
+        line-height: 30px;
+        text-align: left;
+        width: 100%;
+        font-size: 14px;
+        @media (width >= 600px) {
+          font-size: 16px;
+        }
+        &-name {
+          margin-bottom: 10px;
+        }
+
+        &-name::first-letter {
+          text-transform: uppercase;
+        }
+      }
+      .products {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+
+        .product {
+          display: grid;
+          grid-template-columns: 5fr 1fr;
+          align-items: center;
+          padding: 10px 15px;
+          font-size: 16px;
+          background-color: $color2;
+          box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.05);
+          border-radius: $border-radius1;
+          cursor: pointer;
+          font-size: 14px;
+          @media (width >= 600px) {
+            font-size: 16px;
+          }
+          &-name::first-letter {
+            text-transform: uppercase;
+          }
+          .plus-icon {
+            justify-self: end;
+            color: $color9;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
+}
