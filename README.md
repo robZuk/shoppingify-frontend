@@ -1,4 +1,4 @@
-# shoppingify  
+# Shoppingify  
 
 ### [Live: https://shoppingify-frontend.onrender.com](https://shoppingify-frontend.onrender.com)
 ### [API: https://github.com/robZuk/shoppingify-backend.git](https://github.com/robZuk/shoppingify-backend.git)
@@ -9,10 +9,11 @@
 ### Technologies
 - React 18
 - React Router 6
-- React Redux
+- Redux Toolkit
 - React Hook Form 7
-- Bootstrap 5
-- styled components 5
+- React Spring
+- React Transition Group
+- SCSS
 - MongoDB
 - Express 4
 
@@ -20,53 +21,40 @@
 
 ### Features
 
-- Full featured shopping cart
-- Car search feature
-- User profile with orders
-- Admin product management
-- Admin user management
-- Admin Order details page
-- PayPal integration
+- Craetae shopping list
+- Add new product
+- Products view
+- History list view
+- Statistics view
 
 ### Env Variables
-Create a .env file in then root and add the following
+Create a .env files in then root frontend and backend folder and add the following
 
 ```
-NODE_ENV = development
-PORT = 5000
+//backend
 MONGO_URI = your mongodb uri
 JWT_SECRET = 'abc123'
-PAYPAL_CLIENT_ID = your paypal client id
+
+//frontend
+VITE_BASE_URL = your backend url
+
 ```
 
 ### Install Dependencies (frontend & backend)
 ```
 npm install
-cd frontend
-npm install
-```
+
 ### Run
 ```
-Run frontend (:3000) & backend (:5000)
+Run frontend
 npm run dev
 
 Run backend only
 npm run server
 ```
 
-Seed Database
-You can use the following commands to seed the database with some sample users and products as well as destroy all data
 
-### Import data
-```
-npm run data:import
-```
-
-### Destroy data
-```
-npm run data:destroy
-```
-### Admin Panel
+### admin
 ```
 user: admin@example.com
 password: 123456
