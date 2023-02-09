@@ -44,18 +44,18 @@ VITE_BASE_URL = your backend url
 ```
 npm install
 ```
-####Run frontend
+###Run frontend
 ```
 npm run dev
 ```
 
-####Run backend only
+###Run backend only
 ```
 npm run server
 ```
 
 
-### example user
+### Example user
 ```
 user: admin@example.com
 password: 123456
