@@ -21,7 +21,7 @@
 
 ### Features
 
-- Craetae shopping list
+- Create shopping list
 - Add new product
 - Products view
 - History list view
