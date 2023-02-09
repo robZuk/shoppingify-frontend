@@ -31,11 +31,11 @@
 Create a .env files in then root frontend and backend folder and add the following
 
 ```
-//backend
+backend:
 MONGO_URI = your mongodb uri
 JWT_SECRET = 'abc123'
 
-//frontend
+frontend:
 VITE_BASE_URL = your backend url
 
 ```
@@ -44,12 +44,13 @@ VITE_BASE_URL = your backend url
 ```
 npm install
 ```
-###Run frontend
+### Run frontend
 ```
 npm run dev
 ```
 
-###Run backend only
+### Run backend only
+
 ```
 npm run server
 ```
