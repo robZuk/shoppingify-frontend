@@ -54,7 +54,7 @@ npm run server
 ```
 
 
-### admin
+### example user
 ```
 user: admin@example.com
 password: 123456
