@@ -43,13 +43,14 @@ VITE_BASE_URL = your backend url
 ### Install Dependencies (frontend & backend)
 ```
 npm install
-
-### Run
 ```
-Run frontend
+####Run frontend
+```
 npm run dev
+```
 
-Run backend only
+####Run backend only
+```
 npm run server
 ```
 
