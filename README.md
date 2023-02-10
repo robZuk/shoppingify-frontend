@@ -1,7 +1,7 @@
 # Shoppingify  
 
 ### [Live: https://shoppingify-frontend.onrender.com](https://shoppingify-frontend.onrender.com)
-### [API: https://github.com/robZuk/shoppingify-backend.git](https://github.com/robZuk/shoppingify-backend.git)
+### [API: https://github.com/robZuk/shoppingify-backend.git](https://github.com/robZuk/shoppingify-backend)
 
 ![shoppingiffy](https://user-images.githubusercontent.com/40764780/217834692-4b104c6a-82ac-46d0-9f1c-3d7ae1b5298c.png)
 
