@@ -83,6 +83,16 @@
       color: $color12;
     }
 
+    .loading::before {
+      content: "Loading . . . ";
+      font-size: 14px;
+      font-family: Quicksand;
+      color: $color1;
+    }
+    .loading {
+      font-size: 0;
+    }
+
     .xmark {
       position: absolute;
       top: 425px;

@@ -54,6 +54,7 @@ function NewProduct() {
   } = useForm();
 
   const [uploadImageError, setUploadImageError] = useState("");
+  const [uploadImageLoading, setUploadImageLoading] = useState(false);
 
   const nameError = useCallback(() => {
     productsIsError &&
@@ -144,6 +145,7 @@ function NewProduct() {
   // image
   const uploadFileHandler = async (e) => {
     setUploadImageError("");
+    setUploadImageLoading(true);
     const files = e.target.files[0];
     const formData = new FormData();
     formData.append("image", files);
@@ -159,9 +161,12 @@ function NewProduct() {
         formData,
         config
       );
+
       setImage(data);
+      setUploadImageLoading(false);
     } catch (error) {
       console.error(error);
+      setUploadImageLoading(false);
       setUploadImageError(
         "Invalid file format. The correct file format is: .jpg .jpeg .png"
       );
@@ -244,6 +249,7 @@ function NewProduct() {
             }`}
           ></textarea>
           <label htmlFor="image">Image (optional)</label>
+          {/* {uploadImageLoading && <Spinner small />} */}
           <input
             type="file"
             accept=".png, .jpg, .jpeg"
@@ -256,44 +262,41 @@ function NewProduct() {
                   : "new-product-image-error image-out"
                 : image
                 ? "new-product-image image-in"
+                : uploadImageLoading
+                ? "new-product-image loading"
                 : "new-product-image image-out"
             }`}
           ></input>
 
           <label htmlFor="category">Category</label>
-          {isLoading ? (
-            <Spinner small={true} />
-          ) : (
-            <>
-              <input
-                {...register("category", {
-                  required: true,
-                })}
-                type={`${category.name ? "text" : "hidden"}`}
-                name="category"
-                placeholder="Enter a category"
-                ref={inputCategory}
-                value={category?.name || ""}
-                className={`${
-                  errors.category
-                    ? "new-product-category-error"
-                    : "new-product-category"
-                }`}
-                // readOnly
-              ></input>
-              <img
-                style={{ display: `${category.name ? "block" : "none"}` }}
-                src={XIcon}
-                alt="close"
-                className="xmark"
-                onClick={() => {
-                  setCategory("");
-                  searchedList.current.style.display = "none";
-                  setQuery("");
-                }}
-              />
-            </>
-          )}
+          <input
+            {...register("category", {
+              required: true,
+            })}
+            type={`${category.name ? "text" : "hidden"}`}
+            name="category"
+            placeholder="Enter a category"
+            ref={inputCategory}
+            value={category?.name || ""}
+            className={`${
+              errors.category
+                ? "new-product-category-error"
+                : "new-product-category"
+            }`}
+            // readOnly
+          ></input>
+          <img
+            style={{ display: `${category.name ? "block" : "none"}` }}
+            src={XIcon}
+            alt="close"
+            className="xmark"
+            onClick={() => {
+              setCategory("");
+              searchedList.current.style.display = "none";
+              setQuery("");
+            }}
+          />
+
           <input
             className={`${
               errors.category
