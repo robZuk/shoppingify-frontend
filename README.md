@@ -1,70 +1,63 @@
-# car-rental  
+# Shoppingify
 
-### [https://blooming-gorge-77011.herokuapp.com/](https://blooming-gorge-77011.herokuapp.com/)
+### [https://shoppingify-frontend.onrender.com/](https://shoppingify-frontend.onrender.com/)
 
-![SCREEN](https://user-images.githubusercontent.com/40764780/117391950-56b53680-aef1-11eb-9b0e-92affe5f7938.png)
+![shoppingiffy](https://user-images.githubusercontent.com/40764780/227155251-b0126208-bd49-4e1e-aeb6-f69e5dd9f951.png)
 
 ### Technologies
+
 - React 18
 - React Router 6
-- React Redux
+- Redux Toolkit
 - React Hook Form 7
-- Bootstrap 5
-- styled components 5
+- SASS
 - MongoDB
 - Express 4
 
-
-
 ### Features
 
-- Full featured shopping cart
-- Car search feature
-- User profile with orders
-- Admin product management
-- Admin user management
-- Admin Order details page
-- PayPal integration
+- User Login/Register Panel
+- Products search feature
+- Products shopping list
+- Shopping list history
+- Analisys, Chart
 
-### Env Variables
+### Env Variables -backend
+
 Create a .env file in then root and add the following
 
 ```
-NODE_ENV = development
-PORT = 5000
 MONGO_URI = your mongodb uri
 JWT_SECRET = 'abc123'
-PAYPAL_CLIENT_ID = your paypal client id
+```
+
+### Env Variables -frontend
+
+Create a .env file in then root and add the following
+
+```
+VITE_BASE_URL = 'your API adress'
 ```
 
 ### Install Dependencies (frontend & backend)
+
 ```
 npm install
-cd frontend
-npm install
+
 ```
+
 ### Run
+
 ```
-Run frontend (:3000) & backend (:5000)
+Run frontend
 npm run dev
 
-Run backend only
+Run backend
 npm run server
 ```
 
-Seed Database
-You can use the following commands to seed the database with some sample users and products as well as destroy all data
+### Example user
 
-### Import data
-```
-npm run data:import
-```
-
-### Destroy data
-```
-npm run data:destroy
-```
-### Admin Panel
 ```
 user: admin@example.com
 password: 123456
