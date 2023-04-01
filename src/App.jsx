@@ -13,12 +13,7 @@ import Login from "./components/user/Login";
 import Register from "./components/user/Register";
 import { Context } from "./context";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+import { Route } from "react-router-dom";
 
 const NewProduct = lazy(() => import("./components/sidebar/NewProduct"));
 const ProductDeleteModal = lazy(() =>
@@ -68,20 +63,18 @@ function App() {
                 >
                   <div style={{ position: "sticky", top: 0 }}>
                     <Routes>
-                      <Route path="*" element={<PrivateRoute />}>
-                        <Route path="*" element={<Sidebar />}>
-                          <Route
-                            path="products/:productId"
-                            element={
-                              <ProductDetail setModalIsOpen={setModalIsOpen} />
-                            }
-                          ></Route>
-                          <Route
-                            path="products/new-product"
-                            element={<NewProduct />}
-                          ></Route>
-                          <Route path="*" element={<List />}></Route>
-                        </Route>
+                      <Route path="*" element={<Sidebar />}>
+                        <Route
+                          path="products/:productId"
+                          element={
+                            <ProductDetail setModalIsOpen={setModalIsOpen} />
+                          }
+                        ></Route>
+                        <Route
+                          path="products/new-product"
+                          element={<NewProduct />}
+                        ></Route>
+                        <Route path="*" element={<List />}></Route>
                       </Route>
                     </Routes>
                   </div>

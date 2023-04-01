@@ -26,6 +26,8 @@ function Login() {
     (state) => state.auth
   );
 
+  // console.log(isSuccess)
+
   let inputPasswordRef = useRef();
 
   const props = useSpring({

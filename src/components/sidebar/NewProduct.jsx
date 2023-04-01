@@ -102,7 +102,17 @@ function NewProduct() {
       });
   }, [errors.category]);
 
+  const refComp = useRef();
+
+  const scrollTop = useCallback(() => {
+    refComp.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [productId]);
+
   useEffect(() => {
+    window.outerWidth <= 850 && scrollTop();
     setKeyword("");
 
     categoryFromRedux &&
@@ -209,7 +219,7 @@ function NewProduct() {
   }
 
   return (
-    <>
+    <div className="new-product-wrapper" ref={refComp}>
       <div className="new-product">
         <p className="new-product-title">Add new item</p>
         <form id="form" onSubmit={handleSubmit(onSubmit)}>
@@ -361,27 +371,27 @@ function NewProduct() {
             ></input>
           </div>
         </form>
+        <div className="new-product-buttons">
+          <button
+            type="button"
+            className="cancel"
+            onClick={() => {
+              navigate("/");
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+              resetForm();
+            }}
+          >
+            cancel
+          </button>
+          <button form="form" className="save" type="submit">
+            Save
+          </button>
+        </div>
       </div>
-      <div className="new-product-buttons sidebar-footer">
-        <button
-          type="button"
-          className="cancel"
-          onClick={() => {
-            navigate("/");
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-            resetForm();
-          }}
-        >
-          cancel
-        </button>
-        <button form="form" className="save" type="submit">
-          Save
-        </button>
-      </div>
-    </>
+    </div>
   );
 }
 

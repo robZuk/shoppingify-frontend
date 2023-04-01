@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
@@ -35,7 +35,9 @@ function Main() {
         padding="0px 8px 1px 8px"
         arrowRadius="2"
       />
-      <Outlet />
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </section>
   );
 }

@@ -18,6 +18,8 @@ function History() {
     (state) => state.lists
   );
 
+  console.log(isLoading);
+
   const groupedData = lists.reduce((group, list) => {
     const date = new Date(list.createdAt);
     const year = date.getFullYear();
@@ -89,7 +91,7 @@ function History() {
                       </p>
                       <p className="date">
                         <AiTwotoneCalendar className="date-icon" />
-                        {days[new Date(list.createdAt).getDay()]}{" "}
+                        {days[new Date(list.createdAt).getDay()]}
                         {`${new Date(list.createdAt).getDate()}.${
                           new Date(list.createdAt).getMonth() + 1
                         }.${new Date(list.createdAt).getFullYear()}`}

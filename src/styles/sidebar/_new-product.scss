@@ -1,14 +1,29 @@
+.new-product-wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  border-left: 1px solid #e0e0e0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
+  background-color: $color3;
+  @media (width <= 850px) {
+    border-left: none;
+    box-shadow: none;
+    border-right: 1px solid #e0e0e0;
+    min-height: 70vh;
+  }
+}
 .new-product {
   display: grid;
   grid-template-rows: 1fr 8fr;
-  height: clamp(85vh, 650px, 230vh);
+
   width: 100%;
-  padding: 30px;
+  padding: 60px 20px;
+
   background-color: $color3;
 
   @media (width <= 850px) {
     position: relative;
-    height: clamp(100vh, 710px, 2050vh);
+    // height: clamp(100vh, 710px, 2050vh);
   }
 
   &-title {
@@ -26,7 +41,7 @@
 
   form {
     position: relative;
-    top: 5%;
+    // top: 5%;
     display: flex;
     flex-direction: column;
 
@@ -100,9 +115,6 @@
       width: 12px;
       cursor: pointer;
 
-      @media (width >= 1600px) {
-        top: 415px;
-      }
       @-moz-document url-prefix() {
         @media (width >= 1600px) {
           top: 440px;
@@ -117,6 +129,8 @@
     }
 
     .searched-list {
+      position: absolute;
+      top: 460px;
       padding: 15px 0;
       height: 150px;
       width: min(260px, 100%);
@@ -191,10 +205,10 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: $color3 !important;
+    margin-top: 30px;
+
     @media (width <= 850px) {
       justify-content: start;
-      padding-left: 20px;
     }
 
     button {

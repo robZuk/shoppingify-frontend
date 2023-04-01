@@ -1,7 +1,6 @@
 .list {
   display: grid;
   grid-template-rows: 1fr 4fr;
-
   height: clamp(55vh, 550px, 250vh);
   background-color: $color4;
   @media (width >= 850px) {
