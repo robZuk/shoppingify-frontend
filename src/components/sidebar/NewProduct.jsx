@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../../context";
 import XIcon from "../../assets/xmark.svg";
-import Spinner from "../Spinner";
 import { addCategory } from "../../features/categories/categorySlice";
 import { addProduct } from "../../features/products/productSlice";
 
@@ -28,11 +27,9 @@ function NewProduct() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
 
-  const {
-    category: categoryFromRedux,
-    categories,
-    isLoading,
-  } = useSelector((state) => state.categories);
+  const { category: categoryFromRedux, categories } = useSelector(
+    (state) => state.categories
+  );
 
   const {
     product,

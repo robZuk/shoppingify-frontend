@@ -22,7 +22,7 @@ const getProducts = async (keyword = "", token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  // console.log(keyword);
+
   const response = await axios.get(API_URL + `?keyword=${keyword}`, config);
 
   return response.data;

@@ -49,7 +49,7 @@ function History() {
         position: "top-center",
         theme: "colored",
       });
-  }, []);
+  }, [dispatch, isError]);
 
   return (
     <div className="history">
@@ -65,6 +65,7 @@ function History() {
           </div>
         </div>
       }
+      {}
       {isLoading ? (
         <Spinner />
       ) : (
