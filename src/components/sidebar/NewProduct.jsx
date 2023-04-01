@@ -162,7 +162,6 @@ function NewProduct() {
       setImage(data);
       setUploadImageLoading(false);
     } catch (error) {
-      console.error(error);
       setUploadImageLoading(false);
       setUploadImageError(
         "Invalid file format. The correct file format is: .jpg .jpeg .png"
@@ -224,6 +223,7 @@ function NewProduct() {
             name="name"
             placeholder="Enter a name"
             onChange={handleName}
+            onFocus={() => (searchedList.current.style.display = "none")}
             value={name}
             className={`${
               errors.name ? "new-product-name-error" : "new-product-name"
@@ -241,17 +241,19 @@ function NewProduct() {
             rows="4"
             value={note}
             onChange={handleNote}
+            onFocus={() => (searchedList.current.style.display = "none")}
             className={`${
               errors.note ? "new-product-note-error" : "new-product-note"
             }`}
           ></textarea>
           <label htmlFor="image">Image (optional)</label>
-          {/* {uploadImageLoading && <Spinner small />} */}
+
           <input
             type="file"
             accept=".png, .jpg, .jpeg"
             name="image"
             onChange={uploadFileHandler}
+            onFocus={() => (searchedList.current.style.display = "none")}
             className={`${
               uploadImageError
                 ? image
@@ -280,6 +282,7 @@ function NewProduct() {
                 ? "new-product-category-error"
                 : "new-product-category"
             }`}
+
             // readOnly
           ></input>
           <img

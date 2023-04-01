@@ -48,7 +48,7 @@ function Login() {
       : (inputPasswordRef.current.type = "password");
 
     isSuccess && user && navigate("/");
-  }, [isError, isSuccess, user, message, navigate, dispatch, showPassword]);
+  }, [isError, isSuccess, user, navigate, dispatch, showPassword]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
