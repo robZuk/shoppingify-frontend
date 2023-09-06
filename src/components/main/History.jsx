@@ -18,8 +18,6 @@ function History() {
     (state) => state.lists
   );
 
-  console.log(isLoading);
-
   const groupedData = lists.reduce((group, list) => {
     const date = new Date(list.createdAt);
     const year = date.getFullYear();

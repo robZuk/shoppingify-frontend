@@ -33,7 +33,6 @@ export const addProduct = createAsyncThunk(
 // Get user products
 export const getProducts = createAsyncThunk(
   "products/getAll",
-  // async (_, thunkAPI) => {
   async (keyword, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
@@ -125,6 +124,7 @@ export const productSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
+        console.log(action.payload);
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

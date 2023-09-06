@@ -26,8 +26,6 @@ function Login() {
     (state) => state.auth
   );
 
-  // console.log(isSuccess)
-
   let inputPasswordRef = useRef();
 
   const props = useSpring({
@@ -37,6 +35,16 @@ function Login() {
   });
 
   useEffect(() => {
+    showPassword
+      ? (inputPasswordRef.current.type = "text")
+      : (inputPasswordRef.current.type = "password");
+  }, [showPassword]);
+
+  useEffect(() => {
+    isSuccess && !isError && user && navigate("/");
+  }, [isSuccess, dispatch, navigate]);
+
+  useEffect(() => {
     if (isError) {
       toast.error(message, {
         toastId: "error",
@@ -44,13 +52,7 @@ function Login() {
         theme: "colored",
       });
     }
-
-    showPassword
-      ? (inputPasswordRef.current.type = "text")
-      : (inputPasswordRef.current.type = "password");
-
-    isSuccess && user && navigate("/");
-  }, [isError, isSuccess, user, navigate, dispatch, showPassword]);
+  }, [isError]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
