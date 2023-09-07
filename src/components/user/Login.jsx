@@ -5,9 +5,8 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import { useSpring, animated } from "@react-spring/web";
 import { useSelector, useDispatch } from "react-redux";
-import Spinner from "../Spinner";
 import Logo from "../../assets/logo.svg";
-import { login } from "../../features/auth/authSlice";
+import { login, reset } from "../../features/auth/authSlice";
 import ConfirmButton from "../atoms/ConfirmButton";
 
 function Login() {
@@ -26,7 +25,7 @@ function Login() {
     (state) => state.auth
   );
 
-  let inputPasswordRef = useRef();
+  const inputPasswordRef = useRef();
 
   const props = useSpring({
     from: { opacity: 0 },
@@ -41,8 +40,8 @@ function Login() {
   }, [showPassword]);
 
   useEffect(() => {
-    isSuccess && !isError && user && navigate("/");
-  }, [isSuccess, dispatch, navigate]);
+    !isError && isSuccess && user && !isLoading && navigate("/");
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -52,6 +51,7 @@ function Login() {
         theme: "colored",
       });
     }
+    dispatch(reset());
   }, [isError]);
 
   const onChange = (e) => {
@@ -70,10 +70,6 @@ function Login() {
     dispatch(login(userData));
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   return (
     <div className="modal-user-container">
       <animated.div style={props}>
@@ -88,45 +84,52 @@ function Login() {
             </div>
             <p className="modal-user-left-title">Login to Your Account</p>
             <form onSubmit={onSubmit}>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                onChange={onChange}
-                placeholder="Enter your email"
-                required
-              />
-              <label htmlFor="password">Password</label>
-              <input
-                ref={inputPasswordRef}
-                type="password"
-                id="password"
-                name="password"
-                onChange={onChange}
-                placeholder="Enter password"
-                minLength={5}
-                required
-              />
-              <AiFillEye
-                className="modal-user-left-eye-icon-login"
-                style={{
-                  display: `${showPassword ? "none" : "block"}`,
-                }}
-                onClick={() => {
-                  setShowPassword(true);
-                }}
-              />
-              <AiFillEyeInvisible
-                className="modal-user-left-eye-icon-login"
-                style={{
-                  display: `${showPassword ? "block" : "none"}`,
-                }}
-                onClick={() => {
-                  setShowPassword(false);
-                }}
-              />
-              <ConfirmButton text="Login" />
+              <div>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  onChange={onChange}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="password">Password</label>
+                <input
+                  ref={inputPasswordRef}
+                  type="password"
+                  id="password"
+                  name="password"
+                  onChange={onChange}
+                  placeholder="Enter password"
+                  minLength={5}
+                  required
+                />
+                <AiFillEye
+                  className="modal-user-left-eye-icon-login"
+                  style={{
+                    display: `${showPassword ? "none" : "block"}`,
+                  }}
+                  onClick={() => {
+                    setShowPassword(true);
+                  }}
+                  aria-label="show password"
+                />
+                <AiFillEyeInvisible
+                  className="modal-user-left-eye-icon-login"
+                  style={{
+                    display: `${showPassword ? "block" : "none"}`,
+                  }}
+                  onClick={() => {
+                    setShowPassword(false);
+                  }}
+                  aria-label="hide password"
+                />
+              </div>
+
+              <ConfirmButton text={!isLoading ? "Login" : "Logging in..."} />
             </form>
           </div>
           <div className="modal-user-right">
@@ -137,6 +140,7 @@ function Login() {
             <button
               onClick={() => {
                 navigate("/register");
+                dispatch(reset());
               }}
             >
               Sign Up

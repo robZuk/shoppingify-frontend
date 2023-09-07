@@ -8,7 +8,7 @@
   bottom: 0;
   min-height: 100vh;
   min-width: 100vw;
-  height: clamp(100vh, 880px, 280vh);
+  height: clamp(100vh, 950px, 280vh);
   width: clamp(200px, 900px, 100vw);
   background-color: $color3;
 
@@ -25,7 +25,7 @@
   display: grid;
   grid-template-columns: 1fr;
   width: clamp(180px, 350px, 350px);
-  height: clamp(800px, 800px, 800px);
+  height: clamp(800px, 850px, 850px);
   transform: translate(-50%, -50%);
   border-radius: $border-radius2;
   background-color: white;
@@ -33,11 +33,11 @@
 
   @media (width >= 750px) {
     grid-template-columns: 4fr 3fr;
-    width: clamp(600px, 650px, 650px);
-    height: clamp(600px, 600px, 600px);
+    width: clamp(600px, 650px, 700px);
+    height: 600px;
   }
   @media (width <= 350px) {
-    width: clamp(180px, 300px, 300px);
+    width: clamp(180px, 300px, 350px);
   }
 
   &-left {
@@ -72,10 +72,13 @@
       align-items: flex-start;
       height: 50%;
       width: 100%;
-
+      div {
+        position: relative;
+        width: 100%;
+      }
       label {
         font-size: 14px;
-        padding: 0 3px;
+        padding: 10px 3px;
       }
 
       .name-error {
@@ -85,6 +88,7 @@
       input {
         padding: 15px;
         margin-bottom: 10px;
+        margin-top: 5px;
         width: 90%;
         transition: 0.3s;
         border: none;
@@ -120,22 +124,13 @@
     }
 
     &-eye-icon-login {
-      top: 120px;
-      @media (width >= 750px) {
-        top: 138px;
-      }
+      top: 40px;
     }
     &-eye-icon-register {
-      top: 108px;
-      @media (width >= 750px) {
-        top: 112px;
-      }
+      top: 20px;
     }
     &-eye-icon-register-second {
-      top: 160px;
-      @media (width >= 750px) {
-        top: 165px;
-      }
+      top: 20px;
     }
   }
   &-right {

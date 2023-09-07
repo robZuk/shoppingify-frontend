@@ -14,7 +14,7 @@ $rt-namespace: "Toastify";
 
 .#{$rt-namespace}__toast-container {
   &--top-center {
-    top: 100px;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
   }

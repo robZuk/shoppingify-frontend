@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { FaPowerOff } from "react-icons/fa";
-import { logout } from "../../features/auth/authSlice";
+import { logout, reset } from "../../features/auth/authSlice";
 
 function Main() {
   const dispatch = useDispatch();
@@ -23,6 +23,7 @@ function Main() {
               data-tip="Logout"
               onClick={() => {
                 dispatch(logout());
+                dispatch(reset());
               }}
             />
           </>
@@ -35,9 +36,11 @@ function Main() {
         padding="0px 8px 1px 8px"
         arrowRadius="2"
       />
-      <Suspense>
-        <Outlet />
-      </Suspense>
+      {user && (
+        <Suspense>
+          <Outlet />
+        </Suspense>
+      )}
     </section>
   );
 }

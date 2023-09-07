@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import Spinner from "../Spinner";
 import ReactTooltip from "react-tooltip";
 import { useSpring, animated } from "@react-spring/web";
 import { AiFillEyeInvisible } from "react-icons/ai";
@@ -35,8 +34,16 @@ function Register() {
 
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  useEffect(() => {
+    !showPassword
+      ? (passwordRef.current.type = "text")
+      : (passwordRef.current.type = "password");
+    !showConfirmPassword
+      ? (passwordConfirmRef.current.type = "text")
+      : (passwordConfirmRef.current.type = "password");
+  }, [showPassword, showConfirmPassword]);
 
-  const validatePassword = useCallback(() => {
+  useEffect(() => {
     if (password !== password2) {
       passwordRef.current.setCustomValidity("password do not match");
       passwordConfirmRef.current.setCustomValidity("password do not match");
@@ -47,6 +54,10 @@ function Register() {
   }, [password, password2]);
 
   useEffect(() => {
+    !isError && isSuccess && user && !isLoading && navigate("/");
+  }, [isSuccess]);
+
+  useEffect(() => {
     if (isError) {
       toast.error(message, {
         toastId: "error1",
@@ -54,31 +65,8 @@ function Register() {
         theme: "colored",
       });
     }
-
-    showPassword
-      ? (passwordRef.current.type = "text")
-      : (passwordRef.current.type = "password");
-
-    showConfirmPassword
-      ? (passwordConfirmRef.current.type = "text")
-      : (passwordConfirmRef.current.type = "password");
-
-    // Redirect when logged in
-    isSuccess && user && navigate("/");
-    validatePassword();
-
     dispatch(reset());
-  }, [
-    isError,
-    isSuccess,
-    user,
-    message,
-    navigate,
-    dispatch,
-    showPassword,
-    showConfirmPassword,
-    validatePassword,
-  ]);
+  }, [isError]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -89,10 +77,6 @@ function Register() {
     };
     password === password2 && dispatch(register(userData));
   };
-
-  if (isLoading) {
-    return <Spinner />;
-  }
 
   return (
     <div className="modal-user-container">
@@ -109,91 +93,99 @@ function Register() {
             <p className="modal-user-left-title">Create New Account</p>
 
             <form onSubmit={onSubmit}>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                required
-                minLength={3}
-                maxLength={12}
-              />
+              <div>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  required
+                  minLength={3}
+                  maxLength={12}
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  ref={passwordRef}
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  placeholder="Enter password"
+                  required
+                />
+                <AiFillEye
+                  className="modal-user-left-eye-icon-register"
+                  style={{
+                    display: `${showPassword ? "none" : "block"}`,
+                  }}
+                  onClick={() => {
+                    setShowPassword(true);
+                  }}
+                />
+                <AiFillEyeInvisible
+                  className="modal-user-left-eye-icon-register"
+                  style={{
+                    display: `${showPassword ? "block" : "none"}`,
+                  }}
+                  onClick={() => {
+                    setShowPassword(false);
+                    console.log("ok");
+                  }}
+                />
+              </div>
 
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
+              <div>
+                <input
+                  ref={passwordConfirmRef}
+                  type="password"
+                  id="password2"
+                  name="password2"
+                  value={password2}
+                  onChange={(e) => {
+                    setPassword2(e.target.value);
+                  }}
+                  placeholder="Confirm password"
+                  required
+                />
+                <AiFillEye
+                  className="modal-user-left-eye-icon-register-second"
+                  style={{
+                    display: `${showConfirmPassword ? "none" : "block"}`,
+                  }}
+                  onClick={() => {
+                    setShowConfirmPassword(true);
+                  }}
+                />
+                <AiFillEyeInvisible
+                  className="modal-user-left-eye-icon-register-second"
+                  style={{
+                    display: `${showConfirmPassword ? "block" : "none"}`,
+                  }}
+                  onClick={() => {
+                    setShowConfirmPassword(false);
+                  }}
+                />
+              </div>
+              <ConfirmButton
+                text={!isLoading ? "Register" : "Registering..."}
               />
-
-              <input
-                ref={passwordRef}
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                placeholder="Enter password"
-                required
-              />
-
-              <AiFillEye
-                className="modal-user-left-eye-icon-register"
-                style={{
-                  display: `${showPassword ? "none" : "block"}`,
-                }}
-                onClick={() => {
-                  setShowPassword(true);
-                }}
-              />
-              <AiFillEyeInvisible
-                className="modal-user-left-eye-icon-register"
-                style={{
-                  display: `${showPassword ? "block" : "none"}`,
-                }}
-                onClick={() => {
-                  setShowPassword(false);
-                }}
-              />
-
-              <input
-                ref={passwordConfirmRef}
-                type="password"
-                id="password2"
-                name="password2"
-                value={password2}
-                onChange={(e) => {
-                  setPassword2(e.target.value);
-                }}
-                placeholder="Confirm password"
-                required
-              />
-              <AiFillEye
-                className="modal-user-left-eye-icon-register-second"
-                style={{
-                  display: `${showConfirmPassword ? "none" : "block"}`,
-                }}
-                onClick={() => {
-                  setShowConfirmPassword(true);
-                }}
-              />
-              <AiFillEyeInvisible
-                className="modal-user-left-eye-icon-register-second"
-                style={{
-                  display: `${showConfirmPassword ? "block" : "none"}`,
-                }}
-                onClick={() => {
-                  setShowConfirmPassword(false);
-                }}
-              />
-              <ConfirmButton text="Register" />
             </form>
           </div>
           <div className="modal-user-right">
@@ -204,6 +196,7 @@ function Register() {
             <button
               onClick={() => {
                 navigate("/login");
+                dispatch(reset());
               }}
             >
               Login
