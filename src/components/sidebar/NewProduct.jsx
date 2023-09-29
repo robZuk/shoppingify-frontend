@@ -13,7 +13,6 @@ import Spinner from "../Spinner";
 
 function NewProduct() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
@@ -33,8 +32,6 @@ function NewProduct() {
 
   const { setKeyword } = useContext(Context);
 
-  // const productId = product._id;
-
   const {
     register,
     handleSubmit,
@@ -47,12 +44,12 @@ function NewProduct() {
 
   const refComp = useRef();
 
-  // const scrollTop = useCallback(() => {
-  //   refComp.current.scrollIntoView({
-  //     behavior: "smooth",
-  //     block: "start",
-  //   });
-  // }, [productId]);
+  const scrollTop = useCallback(() => {
+    refComp.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [productId]);
 
   useEffect(() => {
     errors.name?.type === "required" &&
@@ -88,7 +85,7 @@ function NewProduct() {
   }, [errors, uploadImageError]);
 
   useEffect(() => {
-    // window.outerWidth <= 850 && scrollTop();
+    window.outerWidth <= 850 && scrollTop();
     setKeyword("");
 
     newCategory &&

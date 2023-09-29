@@ -29,13 +29,6 @@ function ProductDetail({ setModalIsOpen, setProductId }) {
     setProductId(productId);
   }, [productId]);
 
-  // const {
-  //   product,
-  //   isLoading: productsIsLoading,
-  //   isError: productsIsError,
-  //   message: productsMessage,
-  // } = useSelector((state) => state.products);
-
   const {
     data: product,
     isLoading,
