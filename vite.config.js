@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      api: "https://shoppingify-backend-61bb.onrender.com",
+      "/api": "https://shoppingify-backend-61bb.onrender.com",
       "/uploads": "https://shoppingify-backend-61bb.onrender.com",
     },
     //   proxy: {
