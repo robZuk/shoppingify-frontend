@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: "https://shoppingify-backend-61bb.onrender.com",
+        target: "https://shoppingify-backend-61bb.onrender.com",
         // target: "http://localhost:5000",
         changeOrigin: true,
         //
