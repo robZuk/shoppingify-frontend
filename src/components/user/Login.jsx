@@ -23,12 +23,6 @@ function Login() {
 
   const { email, password } = formData;
 
-  // console.log(email, password);
-
-  // const { user, isError, isSuccess, message } = useSelector(
-  //   (state) => state.auth
-  // );
-
   const [login, { isLoading }] = useLoginMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
@@ -64,18 +58,18 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      // console.log(res);
-      navigate("/");
-    } catch (err) {
-      toast.error(err?.data?.message || err.error, {
-        toastId: "error",
-        position: "top-center",
-        theme: "colored",
-      });
-    }
+    console.log("ok");
+    // try {
+    //   const res = await login({ email, password }).unwrap();
+    //   dispatch(setCredentials({ ...res }));
+    //   navigate("/");
+    // } catch (err) {
+    //   toast.error(err?.data?.message || err.error, {
+    //     toastId: "error",
+    //     position: "top-center",
+    //     theme: "colored",
+    //   });
+    // }
   };
 
   return (

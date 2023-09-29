@@ -32,11 +32,11 @@ function App() {
   return (
     <>
       <div className="App">
-        <ProductDeleteModal
+        {/* <ProductDeleteModal
           modalIsOpen={modalIsOpen}
           setModalIsOpen={setModalIsOpen}
           id={productId}
-        />
+        /> */}
         <Context.Provider value={{ keyword, setKeyword }}>
           <div className="wrapper">
             <Navigation />
@@ -44,7 +44,8 @@ function App() {
               <Routes>
                 <Route path="login" element={<Login />}></Route>
                 <Route path="register" element={<Register />}></Route>
-                <Route path="*" element={<PrivateRoute />}>
+                <Route path="/" element={<div>Main</div>}></Route>
+                {/* <Route path="*" element={<PrivateRoute />}>
                   <Route path="*" element={<Main />}>
                     <Route index element={<Products />}></Route>
                     <Route path="products/*" element={<Products />}></Route>
@@ -53,9 +54,9 @@ function App() {
                     <Route path="history" element={<History />}></Route>
                     <Route path="history/:id" element={<ListDetail />}></Route>
                   </Route>
-                </Route>
+                </Route> */}
               </Routes>
-              <TransitionGroup>
+              {/* <TransitionGroup>
                 <CSSTransition
                   timeout={300}
                   classNames="sidebar"
@@ -84,7 +85,7 @@ function App() {
                     </Routes>
                   </div>
                 </CSSTransition>
-              </TransitionGroup>
+              </TransitionGroup> */}
             </div>
           </div>
         </Context.Provider>
