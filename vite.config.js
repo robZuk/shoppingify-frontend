@@ -7,10 +7,16 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://shoppingify-backend-61bb.onrender.com",
-        // target: "http://localhost:5000",
         changeOrigin: true,
-        //
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      // "/api": {
+      //   target: "https://shoppingify-backend-61bb.onrender.com",
+      //   // target: "http://localhost:5000",
+      //   changeOrigin: true,
+      //
+      // },
     },
   },
 });
