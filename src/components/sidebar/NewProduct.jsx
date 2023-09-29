@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  useContext,
+} from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -49,7 +56,7 @@ function NewProduct() {
       behavior: "smooth",
       block: "start",
     });
-  }, [productId]);
+  }, [data?.product._id]);
 
   useEffect(() => {
     errors.name?.type === "required" &&
