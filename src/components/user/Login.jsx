@@ -58,18 +58,17 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("ok");
-    // try {
-    //   const res = await login({ email, password }).unwrap();
-    //   dispatch(setCredentials({ ...res }));
-    //   navigate("/");
-    // } catch (err) {
-    //   toast.error(err?.data?.message || err.error, {
-    //     toastId: "error",
-    //     position: "top-center",
-    //     theme: "colored",
-    //   });
-    // }
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, {
+        toastId: "error",
+        position: "top-center",
+        theme: "colored",
+      });
+    }
   };
 
   return (
