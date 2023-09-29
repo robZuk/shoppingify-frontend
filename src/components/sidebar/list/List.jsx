@@ -8,9 +8,8 @@ import { MdModeEdit } from "react-icons/md";
 import { SiZeromq } from "react-icons/si";
 import ProductOnList from "./ProductOnList";
 import ListProperty from "./ListProperty";
-import { createList, editListName } from "../../../features/lists/listSlice";
-import { resetProduct } from "../../../features/products/productSlice";
-import { resetCategory } from "../../../features/categories/categorySlice";
+import { useGetCategoriesQuery } from "../../../slices/categoriesApiSlice";
+import { editListName, reset } from "../../../slices/listSlice";
 
 function List() {
   const [name, setName] = useState("");
@@ -18,20 +17,17 @@ function List() {
   const [listSaved, setListSaved] = useState(false);
 
   const navigate = useNavigate();
-
-  const { categories } = useSelector((state) => state.categories);
-  const { products, name: listName } = useSelector((state) => state.lists.list);
-
-  const selectedCategories = [...new Set(products.map((obj) => obj.category))];
-
   const dispatch = useDispatch();
 
-  const handleCreateList = (e) => {
-    e.preventDefault();
-    dispatch(createList({ name, products }));
-    setListSaved(true);
-    setName("");
-  };
+  const {
+    data: categories,
+    isLoading: isLoadingCategories,
+    error: categoriesError,
+  } = useGetCategoriesQuery();
+
+  const { products, name: listName } = useSelector((state) => state.list);
+
+  const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
 
   return (
     <>
@@ -43,8 +39,8 @@ function List() {
             className="list-new-item-button"
             onClick={() => {
               navigate("products/new-product");
-              dispatch(resetProduct());
-              dispatch(resetCategory());
+              // dispatch(resetProduct());
+              // dispatch(resetCategory());
             }}
           >
             Add item
@@ -98,7 +94,10 @@ function List() {
 
           <div
             className="list-products-info"
-            style={{ opacity: `${selectedCategories.length ? "0" : "1"}` }}
+            style={{
+              opacity: `${selectedCategories.length ? "0" : "1"}`,
+              // display: `${selectedCategories.length ? "none" : "block"}`,
+            }}
           >
             <div className="empty-info">
               <SiZeromq className="empty-info-icon" />
@@ -112,7 +111,7 @@ function List() {
             alt=""
           />
           <div>
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <div key={category._id}>
                 <p className="list-products-category">
                   {selectedCategories.includes(category._id) && category.name}
@@ -120,7 +119,7 @@ function List() {
 
                 <TransitionGroup className="animation-list">
                   {products
-                    .filter((product) => product.category === category._id)
+                    ?.filter((product) => product.category === category._id)
                     .map((product) => (
                       <CSSTransition
                         key={product._id}
@@ -142,7 +141,7 @@ function List() {
       <ListProperty
         name={name}
         setName={setName}
-        handleCreateList={handleCreateList}
+        // handleCreateList={handleCreateList}
         listSaved={listSaved}
         setListSaved={setListSaved}
       />

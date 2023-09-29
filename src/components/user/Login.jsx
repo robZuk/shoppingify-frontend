@@ -5,8 +5,10 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import { useSpring, animated } from "@react-spring/web";
 import { useSelector, useDispatch } from "react-redux";
+import { useLoginMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
 import Logo from "../../assets/logo.svg";
-import { login, reset } from "../../features/auth/authSlice";
+// import { login, reset } from "../../features/auth/authSlice";
 import ConfirmButton from "../atoms/ConfirmButton";
 
 function Login() {
@@ -21,9 +23,17 @@ function Login() {
 
   const { email, password } = formData;
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  // console.log(email, password);
+
+  // const { user, isError, isSuccess, message } = useSelector(
+  //   (state) => state.auth
+  // );
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  // console.log(userInfo);
 
   const inputPasswordRef = useRef();
 
@@ -34,25 +44,16 @@ function Login() {
   });
 
   useEffect(() => {
-    showPassword
+    !showPassword
       ? (inputPasswordRef.current.type = "text")
       : (inputPasswordRef.current.type = "password");
   }, [showPassword]);
 
   useEffect(() => {
-    !isError && isSuccess && user && !isLoading && navigate("/");
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message, {
-        toastId: "error",
-        position: "top-center",
-        theme: "colored",
-      });
+    if (userInfo) {
+      navigate("/");
     }
-    dispatch(reset());
-  }, [isError]);
+  }, [navigate, userInfo]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -61,13 +62,20 @@ function Login() {
     }));
   };
 
-  const onSubmit = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const userData = {
-      email,
-      password,
-    };
-    dispatch(login(userData));
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      // console.log(res);
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, {
+        toastId: "error",
+        position: "top-center",
+        theme: "colored",
+      });
+    }
   };
 
   return (
@@ -83,7 +91,7 @@ function Login() {
               </p>
             </div>
             <p className="modal-user-left-title">Login to Your Account</p>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={submitHandler}>
               <div>
                 <label htmlFor="email">Email</label>
                 <input
@@ -140,7 +148,7 @@ function Login() {
             <button
               onClick={() => {
                 navigate("/register");
-                dispatch(reset());
+                // dispatch(reset());
               }}
             >
               Sign Up

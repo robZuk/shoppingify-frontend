@@ -1,20 +1,15 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useContext,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, useMemo, useContext } from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../../context";
 import XIcon from "../../assets/xmark.svg";
-import { addCategory } from "../../features/categories/categorySlice";
-import { addProduct } from "../../features/products/productSlice";
+import { useCreateProductMutation } from "../../slices/productsApiSlice";
+import { useCreateCategoryMutation } from "../../slices/categoriesApiSlice";
+import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
+import Spinner from "../Spinner";
 
 function NewProduct() {
   const navigate = useNavigate();
@@ -27,40 +22,39 @@ function NewProduct() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
 
-  const { category: categoryFromRedux, categories } = useSelector(
-    (state) => state.categories
-  );
+  const [createProduct, { data, isSuccess, isLoading }] =
+    useCreateProductMutation();
+  const [createCategory, { data: newCategory }] = useCreateCategoryMutation();
+  const { data: categories } = useGetCategoriesQuery();
 
-  const {
-    product,
-    isSuccess: productsIsSuccess,
-    isError: productsIsError,
-    message: productsMessage,
-  } = useSelector((state) => state.products);
+  useEffect(() => {
+    isSuccess && navigate(`/products/${data.product._id}`);
+  }, [isSuccess]);
 
   const { setKeyword } = useContext(Context);
 
-  const productId = product._id;
+  // const productId = product._id;
 
   const {
     register,
     handleSubmit,
     setValue,
-
     formState: { errors },
   } = useForm();
 
   const [uploadImageError, setUploadImageError] = useState("");
   const [uploadImageLoading, setUploadImageLoading] = useState(false);
 
-  const nameError = useCallback(() => {
-    productsIsError &&
-      toast.error(productsMessage, {
-        toastId: "error",
-        position: "top-center",
-        theme: "colored",
-      });
+  const refComp = useRef();
 
+  // const scrollTop = useCallback(() => {
+  //   refComp.current.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "start",
+  //   });
+  // }, [productId]);
+
+  useEffect(() => {
     errors.name?.type === "required" &&
       toast.error("Name is required", {
         toastId: "error",
@@ -73,71 +67,36 @@ function NewProduct() {
         position: "top-center",
         theme: "colored",
       });
-  }, [errors.name]);
-
-  const noteError = useCallback(() => {
     errors.note &&
       toast.error("Note is too long (max 170 characters)", {
         toastId: "error2",
         position: "top-center",
         theme: "colored",
       });
-  }, [errors.note]);
-
-  const imageError = useCallback(() => {
     uploadImageError &&
       toast.error(uploadImageError, {
         toastId: "error3",
         position: "top-center",
         theme: "colored",
       });
-  }, [uploadImageError]);
-
-  const categoryError = useCallback(() => {
     errors.category &&
       toast.error("Category is required", {
         toastId: "error1",
         position: "top-center",
         theme: "colored",
       });
-  }, [errors.category]);
-
-  const refComp = useRef();
-
-  const scrollTop = useCallback(() => {
-    refComp.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [productId]);
+  }, [errors, uploadImageError]);
 
   useEffect(() => {
-    window.outerWidth <= 850 && scrollTop();
+    // window.outerWidth <= 850 && scrollTop();
     setKeyword("");
 
-    categoryFromRedux &&
+    newCategory &&
       setCategory({
-        name: categoryFromRedux.name,
-        id: categoryFromRedux._id,
+        name: newCategory.name,
+        id: newCategory._id,
       });
-
-    //redirect to product
-    productsIsSuccess && productId && navigate(`/products/${productId}`);
-
-    //form errors
-    nameError();
-    noteError();
-    imageError();
-    categoryError();
-  }, [
-    categories,
-    product,
-    categoryFromRedux,
-    nameError,
-    noteError,
-    imageError,
-    categoryError,
-  ]);
+  }, [newCategory]);
 
   //name
   const handleName = (e) => {
@@ -181,26 +140,38 @@ function NewProduct() {
 
   //search category
   const filteredCategories = useMemo(() => {
-    return categories.filter((category) => {
+    return categories?.filter((category) => {
       const regex = new RegExp(`${query}`, "ig");
       return regex.test(category.name);
     });
   }, [query, categories]);
 
   //create product
-  const createProduct = () => {
-    dispatch(
-      addProduct({
+  const createNewProduct = () => {
+    try {
+      createProduct({
         name: name,
         note: note,
         image: image ? image : "/sample.jpg",
         category: category.id,
-      })
-    );
+      });
+      isLoading && <Spinner />;
+      toast.info("Product added successfully", {
+        toastId: "success",
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      toast.error(err?.data?.message || err.error, {
+        toastId: "error",
+        position: "top-center",
+        theme: "colored",
+      });
+    }
   };
 
   function onSubmit() {
-    createProduct();
+    createNewProduct();
     resetForm();
   }
 
@@ -238,7 +209,6 @@ function NewProduct() {
             className={`${
               errors.name ? "new-product-name-error" : "new-product-name"
             }`}
-            // required
           ></input>
           <label htmlFor="note">Note (optional)</label>
           <textarea
@@ -292,8 +262,6 @@ function NewProduct() {
                 ? "new-product-category-error"
                 : "new-product-category"
             }`}
-
-            // readOnly
           ></input>
           <img
             style={{ display: `${category.name ? "block" : "none"}` }}
@@ -345,7 +313,7 @@ function NewProduct() {
               <li
                 onClick={() => {
                   setValue("category", newCategoryName);
-                  dispatch(addCategory({ name: newCategoryName }));
+                  createCategory({ name: newCategoryName });
                   searchedList.current.style.display = "none";
                   setNewCategoryName("");
                 }}

@@ -20,11 +20,12 @@ const ProductDeleteModal = lazy(() =>
   import("./components/sidebar/list/ProductDeleteModal")
 );
 const ProductDetail = lazy(() => import("./components/sidebar/ProductDetail"));
-const ListDetail = lazy(() => import("./components/sidebar/list/ListDetail"));
+const ListDetail = lazy(() => import("./components/main/ListDetail"));
 
 function App() {
   const location = useLocation();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [productId, setProductId] = useState("");
 
   const [keyword, setKeyword] = useState("");
 
@@ -34,6 +35,7 @@ function App() {
         <ProductDeleteModal
           modalIsOpen={modalIsOpen}
           setModalIsOpen={setModalIsOpen}
+          id={productId}
         />
         <Context.Provider value={{ keyword, setKeyword }}>
           <div className="wrapper">
@@ -67,7 +69,10 @@ function App() {
                         <Route
                           path="products/:productId"
                           element={
-                            <ProductDetail setModalIsOpen={setModalIsOpen} />
+                            <ProductDetail
+                              setModalIsOpen={setModalIsOpen}
+                              setProductId={setProductId}
+                            />
                           }
                         ></Route>
                         <Route

@@ -1,14 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../features/auth/authSlice";
-import categoryReducer from "../features/categories/categorySlice";
-import productReducer from "../features/products/productSlice";
-import listReducer from "../features/lists/listSlice";
+import authReducer from "../slices/authSlice";
+import listReducer from "../slices/listSlice";
+import { apiSlice } from "../slices/apiSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
-    categories: categoryReducer,
-    products: productReducer,
-    lists: listReducer,
+    list: listReducer,
   },
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true,
 });
+
+export default store;

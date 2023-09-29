@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { useSelector } from "react-redux";
+
 import ReactTooltip from "react-tooltip";
 import { VscHistory } from "react-icons/vsc";
 import { ImStatsBars } from "react-icons/im";
@@ -10,12 +11,12 @@ import { AiOutlineShoppingCart, AiOutlineUnorderedList } from "react-icons/ai";
 import Logo from "../assets/logo.svg";
 
 function Navigation() {
-  const { products } = useSelector((state) => state.lists.list);
-  const { user } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.list);
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <>
-      {user && (
+      {userInfo && (
         <nav className="navigation">
           <img src={Logo} alt="logo" className="navigation-logo" />
           <ul className="navigation-icons">
@@ -70,7 +71,7 @@ function Navigation() {
           </ul>
           <div className="navigation-cart-wrapper">
             <AiOutlineShoppingCart className="navigation-cart-icon" />
-            <div className="navigation-cart-counter">{products.length}</div>
+            <div className="navigation-cart-counter">{products?.length}</div>
           </div>
         </nav>
       )}

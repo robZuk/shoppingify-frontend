@@ -3,11 +3,11 @@ import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Sidebar() {
-  const { user } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <div className="sidebar">
-      <Suspense>{user?.name && <Outlet />}</Suspense>
+      <Suspense>{userInfo?.name && <Outlet />}</Suspense>
     </div>
   );
 }

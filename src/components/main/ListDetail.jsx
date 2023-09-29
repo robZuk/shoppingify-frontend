@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
-import { days } from "../../main/dates";
-import Spinner from "../../Spinner";
-import { getList } from "../../../features/lists/listSlice";
-import { getCategories } from "../../../features/categories/categorySlice";
+import { days } from "./dates";
+import Spinner from "../Spinner";
+import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
+import { useGetListQuery } from "../../slices/listsApiSlice";
+import {
+  editListName,
+  setId,
+  setProductsFromList,
+} from "../../slices/listSlice";
 
 function ListDetail() {
   const navigate = useNavigate();
@@ -16,31 +21,43 @@ function ListDetail() {
 
   const { id } = params;
 
-  const { listDetails, isLoading, isError, message } = useSelector(
-    (state) => state.lists
-  );
-  const { categories } = useSelector((state) => state.categories);
+  const { data: categories } = useGetCategoriesQuery();
+
+  const { data: list, isLoading, error } = useGetListQuery(id);
+
+  // const listDetail = useSelector((state) => state.list);
 
   useEffect(() => {
-    dispatch(getList(id));
-    dispatch(getCategories());
+    if (list?.status === "active") {
+      dispatch(setProductsFromList(list?.products));
+      dispatch(editListName({ name: list?.name }));
+      dispatch(setId(list?._id));
+      navigate(`/products`);
+    } else {
+      dispatch(setProductsFromList([]));
+      dispatch(editListName({ name: "" }));
+      dispatch(setId(""));
+    }
+  }, [list]);
 
+  useEffect(() => {
     window.outerWidth <= 850 &&
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+  }, []);
 
-    //errors
-    isError &&
+  useEffect(() => {
+    error &&
       toast.error(message, {
         toastId: "error1",
         position: "top-center",
         theme: "colored",
       });
-  }, []);
+  }, [error]);
 
-  let groupByCategory = listDetails.products?.reduce((group, list) => {
+  let groupByCategory = list?.products?.reduce((group, list) => {
     const { category } = list;
     group[category] = group[category] ?? [];
     group[category].push(list);
@@ -61,13 +78,13 @@ function ListDetail() {
           >
             <FaLongArrowAltLeft className="back-button-icon" /> back
           </button>
-          <p className="list-details-title">{listDetails.name}</p>
+          <p className="list-details-title">{list.name}</p>
           <p className="date">
             <AiTwotoneCalendar className="date-icon" />
-            {days[new Date(listDetails.createdAt).getDay()]}{" "}
-            {`${new Date(listDetails.createdAt).getDate()}.${
-              new Date(listDetails.createdAt).getMonth() + 1
-            }.${new Date(listDetails.createdAt).getFullYear()}`}
+            {days[new Date(list.createdAt).getDay()]}{" "}
+            {`${new Date(list.createdAt).getDate()}.${
+              new Date(list.createdAt).getMonth() + 1
+            }.${new Date(list.createdAt).getFullYear()}`}
           </p>
 
           {Object.keys(groupByCategory !== undefined && groupByCategory).map(
@@ -79,7 +96,9 @@ function ListDetail() {
                   }
                 })}
                 <div className="list-details-category">
-                  {Object.keys(groupByCategory[key]).map((category) => {
+                  {Object.keys(
+                    groupByCategory !== undefined && groupByCategory[key]
+                  ).map((category) => {
                     return (
                       <div
                         key={groupByCategory[key][category]._id}

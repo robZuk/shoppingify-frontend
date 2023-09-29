@@ -6,10 +6,13 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import CancelButton from "../atoms/CancelButton";
 import ConfirmButton from "../atoms/ConfirmButton";
 import Spinner from "../Spinner";
-import { getProduct } from "../../features/products/productSlice";
-import { addProductToList } from "../../features/lists/listSlice";
+// import { getProduct } from "../../features/products/productSlice";
+// import { addProductToList } from "../../features/lists/listSlice";
+import { useGetProductDetailsQuery } from "../../slices/productsApiSlice";
+import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
+import { addProductToList } from "../../slices/listSlice";
 
-function ProductDetail({ setModalIsOpen }) {
+function ProductDetail({ setModalIsOpen, setProductId }) {
   let { productId } = useParams();
 
   const navigate = useNavigate();
@@ -22,33 +25,54 @@ function ProductDetail({ setModalIsOpen }) {
     });
   }, [productId]);
 
+  useEffect(() => {
+    setProductId(productId);
+  }, [productId]);
+
+  // const {
+  //   product,
+  //   isLoading: productsIsLoading,
+  //   isError: productsIsError,
+  //   message: productsMessage,
+  // } = useSelector((state) => state.products);
+
   const {
-    product,
-    isLoading: productsIsLoading,
-    isError: productsIsError,
-    message: productsMessage,
-  } = useSelector((state) => state.products);
+    data: product,
+    isLoading,
+    refetch,
+    error,
+  } = useGetProductDetailsQuery(productId);
 
-  const { categories } = useSelector((state) => state.categories);
+  // console.log(product);
 
-  const category = categories.find(
-    (category) => category._id == product.category
-  );
+  const {
+    data: categories,
+    // isLoading: isLoadingCategories,
+    // error: categoriesError,
+  } = useGetCategoriesQuery();
+
+  // console.log(categories);
+  const category =
+    product && product.category
+      ? categories?.find((category) => category._id == product.category)
+      : undefined;
+  // console.log(categories);
+  // console.log(category);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    window.outerWidth <= 850 && scrollTop();
+  // useEffect(() => {
+  //   window.outerWidth <= 850 && scrollTop();
 
-    dispatch(getProduct(productId));
+  //   // dispatch(getProduct(productId));
 
-    productsIsError &&
-      toast.error(productsMessage, {
-        toastId: "error1",
-        position: "top-center",
-        theme: "colored",
-      });
-  }, [dispatch, productsIsError]);
+  //   productsIsError &&
+  //     toast.error(error?.data?.message || error.error, {
+  //       toastId: "error1",
+  //       position: "top-center",
+  //       theme: "colored",
+  //     });
+  // }, [dispatch, productsIsError]);
 
   return (
     <>
@@ -66,7 +90,7 @@ function ProductDetail({ setModalIsOpen }) {
           <FaLongArrowAltLeft className="back-button-icon" /> back
         </button>
 
-        {productsIsLoading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <>
@@ -75,7 +99,7 @@ function ProductDetail({ setModalIsOpen }) {
               style={{
                 backgroundImage:
                   product?.image &&
-                  `url(${import.meta.env.VITE_BASE_URL}/api/uploads/${
+                  `url(${import.meta.env.VITE_BASE_URL}/uploads/${
                     product.image
                   })`,
               }}

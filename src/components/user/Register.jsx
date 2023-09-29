@@ -2,13 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
+import { useRegisterMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
 import ReactTooltip from "react-tooltip";
 import { useSpring, animated } from "@react-spring/web";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import ConfirmButton from "../atoms/ConfirmButton";
 import Logo from "../../assets/logo.svg";
-import { register, reset } from "../../features/auth/authSlice";
+// import { register, reset } from "../../features/auth/authSlice";
 
 function Register() {
   const [name, setName] = useState("");
@@ -28,17 +30,21 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  // const { user, isLoading, isError, isSuccess, message } = useSelector(
+  //   (state) => state.auth
+  // );
 
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   useEffect(() => {
-    !showPassword
+    showPassword
       ? (passwordRef.current.type = "text")
       : (passwordRef.current.type = "password");
-    !showConfirmPassword
+    showConfirmPassword
       ? (passwordConfirmRef.current.type = "text")
       : (passwordConfirmRef.current.type = "password");
   }, [showPassword, showConfirmPassword]);
@@ -53,31 +59,43 @@ function Register() {
     }
   }, [password, password2]);
 
-  useEffect(() => {
-    !isError && isSuccess && user && !isLoading && navigate("/");
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   !isError && isSuccess && user && !isLoading && navigate("/");
+  // }, [isSuccess]);
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message, {
-        toastId: "error1",
+  // useEffect(() => {
+  //   if (isError) {
+  //     toast.error(message, {
+  //       toastId: "error1",
+  //       position: "top-center",
+  //       theme: "colored",
+  //     });
+  //   }
+  //   dispatch(reset());
+  // }, [isError]);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    if (password !== password2) {
+      toast.error("Passwords do not match", {
+        toastId: "error",
         position: "top-center",
         theme: "colored",
       });
+    } else {
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error, {
+          toastId: "error1",
+          position: "top-center",
+          theme: "colored",
+        });
+      }
     }
-    dispatch(reset());
-  }, [isError]);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const userData = {
-      name,
-      email,
-      password,
-    };
-    password === password2 && dispatch(register(userData));
   };
-
   return (
     <div className="modal-user-container">
       <animated.div style={props}>
@@ -92,7 +110,7 @@ function Register() {
             </div>
             <p className="modal-user-left-title">Create New Account</p>
 
-            <form onSubmit={onSubmit}>
+            <form onSubmit={submitHandler}>
               <div>
                 <input
                   type="text"
@@ -146,7 +164,6 @@ function Register() {
                   }}
                   onClick={() => {
                     setShowPassword(false);
-                    console.log("ok");
                   }}
                 />
               </div>
@@ -196,7 +213,7 @@ function Register() {
             <button
               onClick={() => {
                 navigate("/login");
-                dispatch(reset());
+                // dispatch(reset());
               }}
             >
               Login

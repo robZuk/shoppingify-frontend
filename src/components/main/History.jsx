@@ -1,24 +1,20 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { SiZeromq } from "react-icons/si";
 import Spinner from "../Spinner";
-import { getLists } from "../../features/lists/listSlice";
+import { useGetListsQuery } from "../../slices/listsApiSlice";
 
 import { months, days } from "./dates";
 
 function History() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { lists, isError, isLoading, message } = useSelector(
-    (state) => state.lists
-  );
+  const { data: lists, isLoading, error } = useGetListsQuery();
 
-  const groupedData = lists.reduce((group, list) => {
+  const groupedData = lists?.reduce((group, list) => {
     const date = new Date(list.createdAt);
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -39,17 +35,16 @@ function History() {
         top: 0,
         behavior: "smooth",
       });
+  }, []);
 
-    dispatch(getLists());
-
-    //errors
-    isError &&
+  useEffect(() => {
+    error &&
       toast.error(message, {
         toastId: "error1",
         position: "top-center",
         theme: "colored",
       });
-  }, [dispatch, isError]);
+  }, [error]);
 
   return (
     <div className="history">
@@ -57,7 +52,7 @@ function History() {
       {
         <div
           className="history-info"
-          style={{ display: `${!lists.length ? "grid" : "none"}` }}
+          style={{ display: `${!lists?.length ? "grid" : "none"}` }}
         >
           <div className="empty-info">
             <SiZeromq className="empty-info-icon" />
@@ -65,7 +60,6 @@ function History() {
           </div>
         </div>
       }
-      {}
       {isLoading ? (
         <Spinner />
       ) : (
@@ -82,7 +76,11 @@ function History() {
                     <div
                       key={list._id}
                       className="history-list-group-list"
-                      onClick={() => navigate(`/history/${list._id}`)}
+                      onClick={() => {
+                        // list.status !== "active"
+                        navigate(`/history/${list._id}`);
+                        // : navigate(`/products`);
+                      }}
                     >
                       <p className="history-list-group-list-name">
                         {list.name}

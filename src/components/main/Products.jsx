@@ -1,40 +1,37 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { SiZeromq } from "react-icons/si";
 import Spinner from "../Spinner";
-import { getCategories } from "../../features/categories/categorySlice";
-import { getProducts } from "../../features/products/productSlice";
+import { useGetProductsQuery } from "../../slices/productsApiSlice";
+import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
 import Search from "./Search";
 import { Context } from "../../context";
 
 function Products() {
-  const {
-    categories,
-    isLoading: categoriesIsLoading,
-    isError: categoriesIsError,
-    message: categoriesMessage,
-  } = useSelector((state) => state.categories);
+  const { keyword, setKeyword } = useContext(Context);
 
-  const {
-    products,
-    isLoading: productsIsLoading,
-    isError: productsIsError,
-    message: productsMessage,
-  } = useSelector((state) => state.products);
+  // console.log(keyword);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { products: productsOnList } = useSelector((state) => state.lists.list);
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    error: productsError,
+  } = useGetProductsQuery({
+    keyword,
+  });
+  const {
+    data: categories,
+    isLoading: isLoadingCategories,
+    error: categoriesError,
+  } = useGetCategoriesQuery();
 
-  const { setKeyword } = useContext(Context);
-
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const searchValue = searchParams.get("keyword");
+  const { products: productsOnList } = useSelector((state) => state.list);
 
   useEffect(() => {
     window.outerWidth <= 850 &&
@@ -42,29 +39,28 @@ function Products() {
         top: 0,
         behavior: "smooth",
       });
+  }, []);
 
-    dispatch(getCategories());
-    dispatch(getProducts(searchValue ? searchValue : ""));
-
+  useEffect(() => {
     //errors
-    categoriesIsError &&
-      toast.error(categoriesMessage, {
+    categoriesError &&
+      toast.error(categoriesError?.data?.message || categoriesError.error, {
         toastId: "error1",
         position: "top-center",
         theme: "colored",
       });
-    productsIsError &&
-      toast.error(productsMessage, {
+    productsError &&
+      toast.error(productsError?.data?.message || productsError.error, {
         toastId: "error2",
         position: "top-center",
         theme: "colored",
       });
-  }, [dispatch, categoriesIsError, productsIsError, searchValue]);
+  }, [categoriesError, productsError]);
 
-  const selectedCategories = [...new Set(products.map((obj) => obj.category))];
+  const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
-      {productsIsLoading && categoriesIsLoading ? (
+      {isLoadingProducts && isLoadingCategories ? (
         <Spinner />
       ) : (
         <div className="products-wrapper">
@@ -78,7 +74,7 @@ function Products() {
             </div>
             <div
               className="products-info"
-              style={{ display: `${products.length ? "none" : "grid"}` }}
+              style={{ display: `${products?.length ? "none" : "grid"}` }}
             >
               <div className="empty-info">
                 <SiZeromq className="empty-info-icon" />
@@ -93,7 +89,7 @@ function Products() {
                   </p>
                   <div className="animation-products products">
                     {products
-                      .filter((product) => product.category === category._id)
+                      ?.filter((product) => product.category === category._id)
                       .map((product) => (
                         <div
                           className="product"

@@ -5,7 +5,7 @@ import {
   removeProductFromList,
   setQuantity,
   confirmProductToogle,
-} from "../../../features/lists/listSlice";
+} from "../../../slices/listSlice";
 
 function Product({ product }) {
   const dispatch = useDispatch();

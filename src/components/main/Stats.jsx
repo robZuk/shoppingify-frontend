@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { months } from "./dates";
 import {
   Chart as ChartJS,
@@ -13,42 +12,46 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { SiZeromq } from "react-icons/si";
-import { getLists } from "../../features/lists/listSlice";
-import { getCategories } from "../../features/categories/categorySlice";
+import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
+import { useGetListsQuery } from "../../slices/listsApiSlice";
 import Spinner from "../Spinner";
 
 function Stats() {
-  const { lists, isError, isLoading, message } = useSelector(
-    (state) => state.lists
-  );
-  const { categories } = useSelector((state) => state.categories);
+  const { data: categories, error: categoriesError } = useGetCategoriesQuery();
 
-  const dispatch = useDispatch();
+  const { data: lists, isLoading, error: listsError } = useGetListsQuery();
 
   useEffect(() => {
-    dispatch(getLists());
     window.outerWidth <= 850 &&
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+  }, []);
 
-    isError &&
-      toast.error(message, {
+  useEffect(() => {
+    listsError &&
+      toast.error(listsError?.data?.message || listsError.error, {
         toastId: "error1",
         position: "top-center",
         theme: "colored",
       });
-  }, [dispatch, isError]);
+    categoriesError &&
+      toast.error(categoriesError?.data?.message || categoriesError.error, {
+        toastId: "error1",
+        position: "top-center",
+        theme: "colored",
+      });
+  }, [listsError, categoriesError]);
 
   //Concatenate all products
-  const allProducts = lists.reduce(
+  const allProducts = lists?.reduce(
     (prev, curr) => [...prev, ...curr.products],
     []
   );
 
   //Top Products calculation
-  const productsQuantity = allProducts.reduce((prev, curr) => {
+  const productsQuantity = allProducts?.reduce((prev, curr) => {
     if (!prev[curr.name]) {
       prev[curr.name] = {
         quantity: 0,
@@ -58,12 +61,11 @@ function Stats() {
     return prev;
   }, {});
 
-  const totalQuantityProducts = Object.values(productsQuantity).reduce(
-    (prev, curr) => {
+  const totalQuantityProducts =
+    productsQuantity &&
+    Object.values(productsQuantity).reduce((prev, curr) => {
       return prev + curr.quantity;
-    },
-    0
-  );
+    }, 0);
 
   for (let key in productsQuantity) {
     productsQuantity[key].percentage = `${(
@@ -72,12 +74,14 @@ function Stats() {
     ).toFixed(0)}`;
   }
 
-  const top3Products = Object.entries(productsQuantity)
-    .sort((a, b) => b[1].percentage - a[1].percentage)
-    .slice(0, 3);
+  const top3Products =
+    productsQuantity &&
+    Object.entries(productsQuantity)
+      .sort((a, b) => b[1].percentage - a[1].percentage)
+      .slice(0, 3);
 
-  //Top categories calculation
-  const categoriesQuantity = allProducts.reduce((prev, curr) => {
+  // //Top categories calculation
+  const categoriesQuantity = allProducts?.reduce((prev, curr) => {
     if (!prev[curr.category]) {
       prev[curr.category] = {
         quantity: 0,
@@ -87,12 +91,11 @@ function Stats() {
     return prev;
   }, {});
 
-  const totalQuantityCategories = Object.values(categoriesQuantity).reduce(
-    (prev, curr) => {
+  const totalQuantityCategories =
+    categoriesQuantity &&
+    Object.values(categoriesQuantity).reduce((prev, curr) => {
       return prev + curr.quantity;
-    },
-    0
-  );
+    }, 0);
 
   for (let key in categoriesQuantity) {
     categoriesQuantity[key].percentage = `${(
@@ -101,17 +104,19 @@ function Stats() {
     ).toFixed(0)}`;
   }
 
-  const top3Categories = Object.entries(categoriesQuantity)
-    .sort((a, b) => b[1].percentage - a[1].percentage)
-    .slice(0, 3);
+  const top3Categories =
+    categoriesQuantity &&
+    Object.entries(categoriesQuantity)
+      .sort((a, b) => b[1].percentage - a[1].percentage)
+      .slice(0, 3);
 
-  //Chart calculation
-  const listsWithMonth = lists.map((list) => {
+  // //Chart calculation
+  const listsWithMonth = lists?.map((list) => {
     return Object.assign({}, list, {
       month: months[new Date(list.createdAt).getMonth()],
     });
   });
-  const productsGroupedByMonth = listsWithMonth.reduce(
+  const productsGroupedByMonth = listsWithMonth?.reduce(
     (acc, { month, products }) => {
       products.forEach(({ quantity }) => {
         acc[month] = (acc[month] || 0) + quantity;
@@ -120,10 +125,6 @@ function Stats() {
     },
     {}
   );
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
 
   ChartJS.register(
     CategoryScale,
@@ -194,7 +195,9 @@ function Stats() {
         pointStyle: "rectRounded",
         usePointStyle: true,
         pointStyleWidth: 10,
-        data: Object.entries(productsGroupedByMonth).map((month) => month[1]),
+        data:
+          productsGroupedByMonth &&
+          Object.entries(productsGroupedByMonth).map((month) => month[1]),
         borderColor: "#f9a109",
         backgroundColor: "#fafafe",
       },

@@ -1,27 +1,26 @@
-import React, { useRef, useEffect, useContext } from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef, useEffect, useContext, useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getProducts } from "../../features/products/productSlice";
 import { Context } from "../../context";
 import XIcon from "../../assets/xmark.svg";
 
 function Search() {
   const inputRef = useRef();
   const location = useLocation();
-
+  const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { keyword, setKeyword } = useContext(Context);
 
   useEffect(() => {
     location.pathname !== "/search" && setKeyword("");
-  }, []);
+    location.pathname !== "/search" && setSearchValue("");
+  }, [location.pathname]);
 
   const searchProduct = () => {
-    if (keyword.trim()) {
-      navigate(`/search?keyword=${keyword}`);
+    if (searchValue.trim()) {
+      navigate(`/search?keyword=${searchValue}`);
+      setKeyword(searchValue);
     } else {
       navigate("/");
     }
@@ -39,8 +38,11 @@ function Search() {
         ref={inputRef}
         type="search"
         placeholder="search item"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={searchValue}
+        onChange={(e) => {
+          // setKeyword(e.target.value)
+          setSearchValue(e.target.value);
+        }}
         onKeyDown={handleKeyPress}
         maxLength={15}
       ></input>
@@ -53,7 +55,9 @@ function Search() {
           className="search-close"
           onClick={() => {
             navigate("/");
-            dispatch(getProducts());
+            // refetch();
+            // dispatch(getProducts());
+            setSearchValue("");
             setKeyword("");
           }}
         />

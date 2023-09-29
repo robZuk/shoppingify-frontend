@@ -1,24 +1,23 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 import { useSpring, animated } from "@react-spring/web";
-import { deleteProduct } from "../../../features/products/productSlice";
+import { useDeleteProductMutation } from "../../../slices/productsApiSlice";
 import ConfirmButton from "../../atoms/ConfirmButton";
 import CancelButton from "../../atoms/CancelButton";
+import Spinner from "../../Spinner";
 
-function ProductDeleteModal({ setModalIsOpen, modalIsOpen }) {
+function ProductDeleteModal({ setModalIsOpen, modalIsOpen, id }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
   const refComp = useRef();
-
-  const productId = location.pathname.slice(10, 34);
 
   const props = useSpring({
     opacity: modalIsOpen ? 1 : 0,
     config: { duration: 500 },
   });
+
+  const [deleteProduct, { isLoading }] = useDeleteProductMutation();
 
   useEffect(() => {
     window.outerWidth <= 850 &&
@@ -27,6 +26,25 @@ function ProductDeleteModal({ setModalIsOpen, modalIsOpen }) {
         block: "start",
       });
   }, [modalIsOpen]);
+
+  const deleteHandler = async () => {
+    try {
+      await deleteProduct(id);
+      toast.error("Product deleted successfully", {
+        toastId: "info",
+        position: "top-center",
+        theme: "light",
+      });
+      isLoading && <Spinner />;
+      refetch();
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, {
+        toastId: "error",
+        position: "top-center",
+        theme: "colored",
+      });
+    }
+  };
 
   return (
     <div
@@ -54,7 +72,7 @@ function ProductDeleteModal({ setModalIsOpen, modalIsOpen }) {
                 bgColor="#eb5757"
                 onClick={() => {
                   setModalIsOpen(false);
-                  dispatch(deleteProduct(productId));
+                  deleteHandler();
                   navigate("/");
                 }}
               />
