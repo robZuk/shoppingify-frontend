@@ -2,14 +2,14 @@ import React, { useState, lazy } from "react";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { Routes, useLocation } from "react-router-dom";
 // import Navigation from "./components/Navigation";
-// import Products from "./components/main/Products";
+import Products from "./components/main/Products";
 // import History from "./components/main//History";
 // import Stats from "./components/main/Stats";
 // import Main from "./components/main/Main";
 // import List from "./components/sidebar/list/List";
 // import Sidebar from "./components/sidebar/Sidebar";
 // import PrivateRoute from "./components/PrivateRoute";
-// import Login from "./components/user/Login";
+import Login from "./components/user/Login";
 // import Register from "./components/user/Register";
 import { Context } from "./context";
 
@@ -22,7 +22,7 @@ import { Route } from "react-router-dom";
 // const ProductDetail = lazy(() => import("./components/sidebar/ProductDetail"));
 // const ListDetail = lazy(() => import("./components/main/ListDetail"));
 
-import Products from "./Products";
+// import Products from "./Products";
 
 function App() {
   const location = useLocation();
@@ -45,8 +45,8 @@ function App() {
             <div className="wrapper-inner">
               <Routes>
                 <Route path="/" element={<Products />}></Route>
-                {/* <Route path="login" element={<Login />}></Route>
-                <Route path="register" element={<Register />}></Route>
+                <Route path="login" element={<Login />}></Route>
+                {/* <Route path="register" element={<Register />}></Route>
                 <Route path="*" element={<PrivateRoute />}>
                   <Route path="*" element={<Main />}>
                     <Route index element={<Products />}></Route>

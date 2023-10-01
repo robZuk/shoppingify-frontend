@@ -25,42 +25,45 @@ function Products() {
   } = useGetProductsQuery({
     keyword,
   });
-  const {
-    data: categories,
-    isLoading: isLoadingCategories,
-    error: categoriesError,
-  } = useGetCategoriesQuery();
+  // const {
+  //   data: categories,
+  //   isLoading: isLoadingCategories,
+  //   error: categoriesError,
+  // } = useGetCategoriesQuery();
 
   const { products: productsOnList } = useSelector((state) => state.list);
 
-  useEffect(() => {
-    window.outerWidth <= 850 &&
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-  }, []);
+  console.log(products);
 
-  useEffect(() => {
-    //errors
-    categoriesError &&
-      toast.error(categoriesError?.data?.message || categoriesError.error, {
-        toastId: "error1",
-        position: "top-center",
-        theme: "colored",
-      });
-    productsError &&
-      toast.error(productsError?.data?.message || productsError.error, {
-        toastId: "error2",
-        position: "top-center",
-        theme: "colored",
-      });
-  }, [categoriesError, productsError]);
+  // useEffect(() => {
+  //   window.outerWidth <= 850 &&
+  //     window.scrollTo({
+  //       top: 0,
+  //       behavior: "smooth",
+  //     });
+  // }, []);
+
+  // useEffect(() => {
+  //   //errors
+  //   categoriesError &&
+  //     toast.error(categoriesError?.data?.message || categoriesError.error, {
+  //       toastId: "error1",
+  //       position: "top-center",
+  //       theme: "colored",
+  //     });
+  //   productsError &&
+  //     toast.error(productsError?.data?.message || productsError.error, {
+  //       toastId: "error2",
+  //       position: "top-center",
+  //       theme: "colored",
+  //     });
+  // }, [categoriesError, productsError]);
 
   const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
-      {isLoadingProducts && isLoadingCategories ? (
+      <div>Login</div>
+      {/* {isLoadingProducts && isLoadingCategories ? (
         <Spinner />
       ) : (
         <div className="products-wrapper">
@@ -113,7 +116,7 @@ function Products() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 }
