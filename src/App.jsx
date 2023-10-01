@@ -1,26 +1,28 @@
 import React, { useState, lazy } from "react";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+// import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { Routes, useLocation } from "react-router-dom";
-import Navigation from "./components/Navigation";
-import Products from "./components/main/Products";
-import History from "./components/main//History";
-import Stats from "./components/main/Stats";
-import Main from "./components/main/Main";
-import List from "./components/sidebar/list/List";
-import Sidebar from "./components/sidebar/Sidebar";
-import PrivateRoute from "./components/PrivateRoute";
-import Login from "./components/user/Login";
-import Register from "./components/user/Register";
+// import Navigation from "./components/Navigation";
+// import Products from "./components/main/Products";
+// import History from "./components/main//History";
+// import Stats from "./components/main/Stats";
+// import Main from "./components/main/Main";
+// import List from "./components/sidebar/list/List";
+// import Sidebar from "./components/sidebar/Sidebar";
+// import PrivateRoute from "./components/PrivateRoute";
+// import Login from "./components/user/Login";
+// import Register from "./components/user/Register";
 import { Context } from "./context";
 
 import { Route } from "react-router-dom";
 
-const NewProduct = lazy(() => import("./components/sidebar/NewProduct"));
-const ProductDeleteModal = lazy(() =>
-  import("./components/sidebar/list/ProductDeleteModal")
-);
-const ProductDetail = lazy(() => import("./components/sidebar/ProductDetail"));
-const ListDetail = lazy(() => import("./components/main/ListDetail"));
+// const NewProduct = lazy(() => import("./components/sidebar/NewProduct"));
+// const ProductDeleteModal = lazy(() =>
+//   import("./components/sidebar/list/ProductDeleteModal")
+// );
+// const ProductDetail = lazy(() => import("./components/sidebar/ProductDetail"));
+// const ListDetail = lazy(() => import("./components/main/ListDetail"));
+
+import Products from "./Products";
 
 function App() {
   const location = useLocation();
@@ -39,10 +41,11 @@ function App() {
         /> */}
         <Context.Provider value={{ keyword, setKeyword }}>
           <div className="wrapper">
-            <Navigation />
+            {/* <Navigation /> */}
             <div className="wrapper-inner">
               <Routes>
-                <Route path="login" element={<Login />}></Route>
+                <Route path="/" element={<Products />}></Route>
+                {/* <Route path="login" element={<Login />}></Route>
                 <Route path="register" element={<Register />}></Route>
                 <Route path="*" element={<PrivateRoute />}>
                   <Route path="*" element={<Main />}>
@@ -53,9 +56,9 @@ function App() {
                     <Route path="history" element={<History />}></Route>
                     <Route path="history/:id" element={<ListDetail />}></Route>
                   </Route>
-                </Route>
+                </Route> */}
               </Routes>
-              <TransitionGroup>
+              {/* <TransitionGroup>
                 <CSSTransition
                   timeout={300}
                   classNames="sidebar"
@@ -84,7 +87,7 @@ function App() {
                     </Routes>
                   </div>
                 </CSSTransition>
-              </TransitionGroup>
+              </TransitionGroup> */}
             </div>
           </div>
         </Context.Provider>
