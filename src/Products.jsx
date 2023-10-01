@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_BASE_URL;
+
 const Products = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(API_URL);
   useEffect(() => {
     // Funkcja asynchroniczna do pobierania danych
     const fetchData = async () => {

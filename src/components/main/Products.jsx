@@ -14,26 +14,27 @@ import { Context } from "../../context";
 function Products() {
   const { keyword, setKeyword } = useContext(Context);
 
-  // console.log(keyword);
+  const API_URL = import.meta.env.VITE_BASE_URL;
+  console.log(API_URL);
 
   const navigate = useNavigate();
 
-  const {
-    data: products,
-    isLoading: isLoadingProducts,
-    error: productsError,
-  } = useGetProductsQuery({
-    keyword,
-  });
+  // const {
+  //   data: products,
+  //   isLoading: isLoadingProducts,
+  //   error: productsError,
+  // } = useGetProductsQuery({
+  //   keyword,
+  // });
   // const {
   //   data: categories,
   //   isLoading: isLoadingCategories,
   //   error: categoriesError,
   // } = useGetCategoriesQuery();
 
-  const { products: productsOnList } = useSelector((state) => state.list);
+  // const { products: productsOnList } = useSelector((state) => state.list);
 
-  console.log(products);
+  // console.log(products);
 
   // useEffect(() => {
   //   window.outerWidth <= 850 &&
@@ -59,7 +60,7 @@ function Products() {
   //     });
   // }, [categoriesError, productsError]);
 
-  const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
+  // const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
       <div>Products</div>
