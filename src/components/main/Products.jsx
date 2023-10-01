@@ -62,7 +62,7 @@ function Products() {
   const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
-      <div>Login</div>
+      <div>Products</div>
       {/* {isLoadingProducts && isLoadingCategories ? (
         <Spinner />
       ) : (
