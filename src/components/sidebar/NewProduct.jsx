@@ -28,9 +28,9 @@ function NewProduct() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
 
-  const [createProduct, { data, isSuccess, isLoading }] =
+  const [createProduct, { data, isSuccess, isLoading, error:productError }] =
     useCreateProductMutation();
-  const [createCategory, { data: newCategory }] = useCreateCategoryMutation();
+  const [createCategory, { data: newCategory, error:categoryError }] = useCreateCategoryMutation();
   const { data: categories } = useGetCategoriesQuery();
 
   useEffect(() => {
@@ -101,6 +101,22 @@ function NewProduct() {
         id: newCategory._id,
       });
   }, [newCategory]);
+
+  useEffect(() => {
+    //errors
+    categoryError &&
+      toast.error(categoryError?.data?.message || categoryError.error, {
+        toastId: "error1",
+        position: "top-center",
+        theme: "colored",
+      });
+    productError &&
+      toast.error(productError?.data?.message || productError.error, {
+        toastId: "error2",
+        position: "top-center",
+        theme: "colored",
+      });
+  }, [categoryError, productError]);
 
   //name
   const handleName = (e) => {

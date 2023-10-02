@@ -27,13 +27,13 @@ function Products() {
     data: categories,
     isLoading: isLoadingCategories,
     error: categoriesError,
+    refetch
   } = useGetCategoriesQuery();
 
-  // const { products: productsOnList } = useSelector((state) => state.list);
 
-  console.log(products);
 
   useEffect(() => {
+    refetch()
     window.outerWidth <= 850 &&
       window.scrollTo({
         top: 0,
@@ -60,8 +60,7 @@ function Products() {
   const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
-      <div>Products</div>
-      {isLoadingProducts && isLoadingCategories ? (
+         {isLoadingProducts && isLoadingCategories ? (
         <Spinner />
       ) : (
         <div className="products-wrapper">

@@ -49,20 +49,21 @@ function History() {
   return (
     <div className="history">
       <p className="history-title">Shopping history</p>
-      {
-        <div
-          className="history-info"
-          style={{ display: `${!lists?.length ? "grid" : "none"}` }}
-        >
-          <div className="empty-info">
-            <SiZeromq className="empty-info-icon" />
-            <span> No items</span>
-          </div>
-        </div>
-      }
+      
+
+      
       {isLoading ? (
         <Spinner />
       ) : (
+        <div
+        className="history-info"
+        style={{ display: `${!lists?.length ? "grid" : "none"}` }}
+      >
+        <div className="empty-info">
+          <SiZeromq className="empty-info-icon" />
+          <span> No items</span>
+        </div>
+      </div> &&
         Object.keys(groupedData).map((year) => (
           <div key={year}>
             <div className="history-list-group">

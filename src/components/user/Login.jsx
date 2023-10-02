@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLoginMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
 import Logo from "../../assets/logo.svg";
-// import { login, reset } from "../../features/auth/authSlice";
 import ConfirmButton from "../atoms/ConfirmButton";
 
 function Login() {
@@ -27,7 +26,6 @@ function Login() {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  // console.log(userInfo);
 
   const inputPasswordRef = useRef();
 

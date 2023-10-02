@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
 import ReactTooltip from "react-tooltip";
@@ -10,7 +10,6 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import ConfirmButton from "../atoms/ConfirmButton";
 import Logo from "../../assets/logo.svg";
-// import { register, reset } from "../../features/auth/authSlice";
 
 function Register() {
   const [name, setName] = useState("");
@@ -30,13 +29,9 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [register, { isLoading }] = useRegisterMutation();
+  const [register, { isLoading, error }] = useRegisterMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
 
-  // const { user, isLoading, isError, isSuccess, message } = useSelector(
-  //   (state) => state.auth
-  // );
 
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -49,30 +44,18 @@ function Register() {
       : (passwordConfirmRef.current.type = "password");
   }, [showPassword, showConfirmPassword]);
 
+
+
   useEffect(() => {
-    if (password !== password2) {
-      passwordRef.current.setCustomValidity("password do not match");
-      passwordConfirmRef.current.setCustomValidity("password do not match");
-    } else {
-      passwordRef.current.setCustomValidity("");
-      passwordConfirmRef.current.setCustomValidity("");
+    if (error) {
+      toast.error(message, {
+        toastId: "error1",
+        position: "top-center",
+        theme: "colored",
+      });
     }
-  }, [password, password2]);
+  }, [error]);
 
-  // useEffect(() => {
-  //   !isError && isSuccess && user && !isLoading && navigate("/");
-  // }, [isSuccess]);
-
-  // useEffect(() => {
-  //   if (isError) {
-  //     toast.error(message, {
-  //       toastId: "error1",
-  //       position: "top-center",
-  //       theme: "colored",
-  //     });
-  //   }
-  //   dispatch(reset());
-  // }, [isError]);
   const submitHandler = async (e) => {
     e.preventDefault();
 
