@@ -31,7 +31,7 @@ function Products() {
   //   error: categoriesError,
   // } = useGetCategoriesQuery();
 
-  const { products: productsOnList } = useSelector((state) => state.list);
+  // const { products: productsOnList } = useSelector((state) => state.list);
 
   console.log(products);
 

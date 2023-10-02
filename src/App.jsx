@@ -10,7 +10,6 @@ import Products from "./components/main/Products";
 // import Sidebar from "./components/sidebar/Sidebar";
 // import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/user/Login";
-import Dupa from "./components/user/Dupa";
 // import Register from "./components/user/Register";
 import { Context } from "./context";
 
@@ -47,7 +46,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Products />}></Route>
                 <Route path="login" element={<Login />}></Route>
-                <Route path="dupa" element={<Dupa />}></Route>
+         
                 {/* <Route path="register" element={<Register />}></Route>
                 <Route path="*" element={<PrivateRoute />}>
                   <Route path="*" element={<Main />}>
