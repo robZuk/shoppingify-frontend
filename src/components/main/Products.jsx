@@ -14,8 +14,6 @@ import { Context } from "../../context";
 function Products() {
   const { keyword, setKeyword } = useContext(Context);
 
-  // console.log(keyword);
-
   const navigate = useNavigate();
 
   const {
@@ -25,45 +23,45 @@ function Products() {
   } = useGetProductsQuery({
     keyword,
   });
-  // const {
-  //   data: categories,
-  //   isLoading: isLoadingCategories,
-  //   error: categoriesError,
-  // } = useGetCategoriesQuery();
+  const {
+    data: categories,
+    isLoading: isLoadingCategories,
+    error: categoriesError,
+  } = useGetCategoriesQuery();
 
   // const { products: productsOnList } = useSelector((state) => state.list);
 
   console.log(products);
 
-  // useEffect(() => {
-  //   window.outerWidth <= 850 &&
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: "smooth",
-  //     });
-  // }, []);
+  useEffect(() => {
+    window.outerWidth <= 850 &&
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+  }, []);
 
-  // useEffect(() => {
-  //   //errors
-  //   categoriesError &&
-  //     toast.error(categoriesError?.data?.message || categoriesError.error, {
-  //       toastId: "error1",
-  //       position: "top-center",
-  //       theme: "colored",
-  //     });
-  //   productsError &&
-  //     toast.error(productsError?.data?.message || productsError.error, {
-  //       toastId: "error2",
-  //       position: "top-center",
-  //       theme: "colored",
-  //     });
-  // }, [categoriesError, productsError]);
+  useEffect(() => {
+    //errors
+    categoriesError &&
+      toast.error(categoriesError?.data?.message || categoriesError.error, {
+        toastId: "error1",
+        position: "top-center",
+        theme: "colored",
+      });
+    productsError &&
+      toast.error(productsError?.data?.message || productsError.error, {
+        toastId: "error2",
+        position: "top-center",
+        theme: "colored",
+      });
+  }, [categoriesError, productsError]);
 
   const selectedCategories = [...new Set(products?.map((obj) => obj.category))];
   return (
     <>
       <div>Products</div>
-      {/* {isLoadingProducts && isLoadingCategories ? (
+      {isLoadingProducts && isLoadingCategories ? (
         <Spinner />
       ) : (
         <div className="products-wrapper">
@@ -116,7 +114,7 @@ function Products() {
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </>
   );
 }
