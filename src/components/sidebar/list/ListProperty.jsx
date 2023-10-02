@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { updateList, reset } from "../../../features/lists/listSlice";
 import {
   useCreateListMutation,
   useUpdateListMutation,
-  useGetListQuery,
 } from "../../../slices/listsApiSlice";
-
 import { editListName, reset, setId } from "../../../slices/listSlice";
-import { useGetProductsQuery } from "../../../slices/productsApiSlice";
 import { useNavigate } from "react-router-dom";
 import ConfirmButton from "../../atoms/ConfirmButton";
 import CancelButton from "../../atoms/CancelButton";
@@ -38,7 +34,6 @@ function ListProperty({ name, setName, setListSaved }) {
   };
 
   return (
-    // <div>ffff</div>
     <div className="sidebar-footer">
       {!list.name ? (
         <div className="list-property-save">
@@ -76,14 +71,12 @@ function ListProperty({ name, setName, setListSaved }) {
               updateList({
                 listId: id,
                 name: listName,
-                // products: products,
                 products: JSON.parse(JSON.stringify(products)),
                 status: "cancelled",
               });
 
               navigate("/history");
               dispatch(reset());
-              // refetch();
               setListSaved(false);
             }}
           />
@@ -99,7 +92,6 @@ function ListProperty({ name, setName, setListSaved }) {
               });
               navigate("/history");
               dispatch(reset());
-              // refetch();
               setListSaved(false);
             }}
           />

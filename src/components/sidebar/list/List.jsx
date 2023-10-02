@@ -9,7 +9,7 @@ import { SiZeromq } from "react-icons/si";
 import ProductOnList from "./ProductOnList";
 import ListProperty from "./ListProperty";
 import { useGetCategoriesQuery } from "../../../slices/categoriesApiSlice";
-import { editListName, reset } from "../../../slices/listSlice";
+import { editListName } from "../../../slices/listSlice";
 
 function List() {
   const [name, setName] = useState("");
@@ -19,11 +19,7 @@ function List() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    data: categories,
-    isLoading: isLoadingCategories,
-    error: categoriesError,
-  } = useGetCategoriesQuery();
+  const { data: categories } = useGetCategoriesQuery();
 
   const { products, name: listName } = useSelector((state) => state.list);
 
@@ -39,8 +35,6 @@ function List() {
             className="list-new-item-button"
             onClick={() => {
               navigate("products/new-product");
-              // dispatch(resetProduct());
-              // dispatch(resetCategory());
             }}
           >
             Add item
@@ -96,7 +90,6 @@ function List() {
             className="list-products-info"
             style={{
               opacity: `${selectedCategories.length ? "0" : "1"}`,
-              // display: `${selectedCategories.length ? "none" : "block"}`,
             }}
           >
             <div className="empty-info">
@@ -141,7 +134,6 @@ function List() {
       <ListProperty
         name={name}
         setName={setName}
-        // handleCreateList={handleCreateList}
         listSaved={listSaved}
         setListSaved={setListSaved}
       />

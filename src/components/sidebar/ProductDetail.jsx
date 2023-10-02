@@ -6,8 +6,6 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import CancelButton from "../atoms/CancelButton";
 import ConfirmButton from "../atoms/ConfirmButton";
 import Spinner from "../Spinner";
-// import { getProduct } from "../../features/products/productSlice";
-// import { addProductToList } from "../../features/lists/listSlice";
 import { useGetProductDetailsQuery } from "../../slices/productsApiSlice";
 import { useGetCategoriesQuery } from "../../slices/categoriesApiSlice";
 import { addProductToList } from "../../slices/listSlice";
@@ -16,56 +14,39 @@ function ProductDetail({ setModalIsOpen, setProductId }) {
   let { productId } = useParams();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const refComp = useRef();
-
-  const scrollTop = useCallback(() => {
-    refComp.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [productId]);
-
-  useEffect(() => {
-    setProductId(productId);
-  }, [productId]);
 
   const {
     data: product,
     isLoading,
-    refetch,
     error,
   } = useGetProductDetailsQuery(productId);
 
-  // console.log(product);
+  const { data: categories } = useGetCategoriesQuery();
 
-  const {
-    data: categories,
-    // isLoading: isLoadingCategories,
-    // error: categoriesError,
-  } = useGetCategoriesQuery();
-
-  // console.log(categories);
   const category =
     product && product.category
       ? categories?.find((category) => category._id == product.category)
       : undefined;
-  // console.log(categories);
-  // console.log(category);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    window.outerWidth <= 850 &&
+      refComp.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    setProductId(productId);
+  }, [productId]);
 
-  // useEffect(() => {
-  //   window.outerWidth <= 850 && scrollTop();
-
-  //   // dispatch(getProduct(productId));
-
-  //   productsIsError &&
-  //     toast.error(error?.data?.message || error.error, {
-  //       toastId: "error1",
-  //       position: "top-center",
-  //       theme: "colored",
-  //     });
-  // }, [dispatch, productsIsError]);
+  useEffect(() => {
+    error &&
+      toast.error(error?.data?.message || error.error, {
+        toastId: "error1",
+        position: "top-center",
+        theme: "colored",
+      });
+  }, [error]);
 
   return (
     <>

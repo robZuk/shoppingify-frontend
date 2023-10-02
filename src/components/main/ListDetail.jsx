@@ -25,8 +25,6 @@ function ListDetail() {
 
   const { data: list, isLoading, error } = useGetListQuery(id);
 
-  // const listDetail = useSelector((state) => state.list);
-
   useEffect(() => {
     if (list?.status === "active") {
       dispatch(setProductsFromList(list?.products));

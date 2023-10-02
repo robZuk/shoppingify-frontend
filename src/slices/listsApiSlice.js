@@ -31,27 +31,12 @@ export const listsApiSlice = apiSlice.injectEndpoints({
 
     createList: builder.mutation({
       query: (data) => ({
-        url: `${LISTS_URL}`,
+        url: LISTS_URL,
         method: "POST",
         body: data,
       }),
       invalidatesTags: ["Lists"],
     }),
-
-    // uploadProductImage: builder.mutation({
-    //   query: (data) => ({
-    //     url: `/api/upload`,
-    //     method: "POST",
-    //     body: data,
-    //   }),
-    // }),
-    // deleteProduct: builder.mutation({
-    //   query: (productId) => ({
-    //     url: `${LISTS_URL}/${productId}`,
-    //     method: "DELETE",
-    //   }),
-    //   providesTags: ["Product"],
-    // }),
   }),
 });
 
@@ -60,8 +45,4 @@ export const {
   useGetListQuery,
   useUpdateListMutation,
   useCreateListMutation,
-  // useUploadProductImageMutation,
-  // useDeleteProductMutation,
-  // useCreateReviewMutation,
-  // useGetTopProductsQuery,
 } = listsApiSlice;

@@ -7,7 +7,6 @@ import React, {
   useContext,
 } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -28,9 +27,10 @@ function NewProduct() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
 
-  const [createProduct, { data, isSuccess, isLoading, error:productError }] =
+  const [createProduct, { data, isSuccess, isLoading, error: productError }] =
     useCreateProductMutation();
-  const [createCategory, { data: newCategory, error:categoryError }] = useCreateCategoryMutation();
+  const [createCategory, { data: newCategory, error: categoryError }] =
+    useCreateCategoryMutation();
   const { data: categories } = useGetCategoriesQuery();
 
   useEffect(() => {
@@ -51,11 +51,12 @@ function NewProduct() {
 
   const refComp = useRef();
 
-  const scrollTop = useCallback(() => {
-    refComp.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  useEffect(() => {
+    window.outerWidth <= 850 &&
+      refComp.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
   }, [data?.product._id]);
 
   useEffect(() => {
@@ -92,7 +93,6 @@ function NewProduct() {
   }, [errors, uploadImageError]);
 
   useEffect(() => {
-    window.outerWidth <= 850 && scrollTop();
     setKeyword("");
 
     newCategory &&

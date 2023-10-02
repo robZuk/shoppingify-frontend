@@ -1,7 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useContext} from "react";
+
+import { useSelector } from "react-redux";
+import { useNavigate} from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { SiZeromq } from "react-icons/si";
@@ -30,7 +30,7 @@ function Products() {
     refetch
   } = useGetCategoriesQuery();
 
-
+  const { products: productsOnList } = useSelector((state) => state.list);
 
   useEffect(() => {
     refetch()
